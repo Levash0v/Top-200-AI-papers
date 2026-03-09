@@ -1,0 +1,31 @@
+{
+  "name": "geo-sdk-demo",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "publish-demo": "bun run demo_publish.ts",
+    "api-demo": "bun run demo_api.ts"
+  },
+  "dependencies": {
+    "@geoprotocol/geo-sdk": "^0.9.0",
+    "dotenv": "^17.2.4",
+    "viem": "^2.45.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "typescript": "^5.9.3"
+  },
+  "description": "- `.env` configured with `DEMO_SPACE_ID`, `PK_SW` - `bun` installed, dependencies available - A personal space on testnet to publish to - Geo Browser open in a tab: `https://geobrowser.io/space/<DEMO_SPACE_ID>` - See GRC-20 spec at: [https://github.com/geobrowser/grc-20/blob/main/spec.md](https://github.com/geobrowser/grc-20/blob/main/spec.md)",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geobrowser/geo_tech_demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/geobrowser/geo_tech_demo/issues"
+  },
+  "homepage": "https://github.com/geobrowser/geo_tech_demo#readme"
+}
