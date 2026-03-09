@@ -11,8 +11,18 @@ import { printOps, publishOps, gql } from "./functions";
 import { TYPES, PROPERTIES, COLLECTION_DATA_SOURCE, VIEWS } from "./constants";
 
 export const SPACE_ID   = "41e851610e13a19441c4d980f2f2ce6b";
-export const DATA_DIR   = path.resolve("./geo_publish_v2");
-export const IMAGES_DIR = path.resolve("./paper_images_202");
+function resolveFirstExistingDir(candidates: string[], label: string): string {
+  for (const candidate of candidates) {
+    const resolved = path.resolve(candidate);
+    if (fs.existsSync(resolved)) return resolved;
+  }
+  throw new Error(
+    `${label} directory not found. Checked: ${candidates.map(c => path.resolve(c)).join(", ")}`
+  );
+}
+
+export const DATA_DIR   = resolveFirstExistingDir(["./geo_publish_v2", "../geo_publish_v2"], "Data");
+export const IMAGES_DIR = resolveFirstExistingDir(["./paper_images_202", "../paper_images_202"], "Images");
 export const DRY_RUN    = process.env.DRY_RUN === "1";
 export const NETWORK    = "TESTNET" as const;
 export const BOUNTY     = "Bounty Top200 AI Papers";
