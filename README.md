@@ -21,11 +21,15 @@ Supporting script:
 
 ## Data used
 
-The scripts read JSON files from `../geo_publish_v2/` (default path from `src/bounty_shared.ts`):
+The scripts read JSON files from `geo_publish_v2/`.
+By default `src/bounty_shared.ts` auto-resolves the first existing directory from:
+
+- `./geo_publish_v2`
+- `../geo_publish_v2`
 
 - entities: `eras.json`, `domains.json`, `venues.json`, `datasets.json`, `concepts.json`, `organizations.json`, `persons.json`, `papers.json`
 - relations: `rel_paper_person.json`, `rel_paper_venue.json`, `rel_paper_dataset.json`, `rel_paper_concept.json`, `rel_paper_org.json`, `rel_paper_era.json`, `rel_paper_domain.json`
-- images: `../paper_images_202/` (optional; papers still publish if an image is missing)
+- images: `paper_images_202/` (optional; papers still publish if an image is missing; auto-resolve order is `./paper_images_202` then `../paper_images_202`)
 
 If your data lives elsewhere, update `DATA_DIR` and `IMAGES_DIR` in `src/bounty_shared.ts`.
 
@@ -78,4 +82,3 @@ bun run 30d_papers151-202.ts
 ## Notes
 
 - Keep this bundle and your exploratory scripts separate.
-- Existing root `README.md` in the project remains unchanged.
