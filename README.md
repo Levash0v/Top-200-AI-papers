@@ -15,10 +15,6 @@ The pipeline publishes the AI papers graph into a Geo space in 4 sequential scri
 - `30c_papers91-150.ts` publishes papers 91-150
 - `30d_papers151-202.ts` publishes the final papers batch
 
-Supporting script:
-
-- `28_check_ai_space.ts` checks current entity counts in the target AI space.
-
 ## Data used
 
 The scripts read JSON files from `geo_publish_v2/`.
@@ -72,7 +68,6 @@ DRY_RUN=1
 ## Run order
 
 ```bash
-bun run 28_check_ai_space.ts
 bun run 30a_foundation_people_papers1-30.ts
 bun run 30b_papers31-90.ts
 bun run 30c_papers91-150.ts
