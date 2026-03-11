@@ -241,7 +241,7 @@ export async function buildPaperOps(
 
   const { id: geoId, ops: paperOps } = Graph.createEntity({
     name: paper.name, description: paper.description,
-    types: [TYPES.project], values, relations: rels,
+    types: [TYPES.paper], values, relations: rels,
   });
   ops.push(...paperOps);
 

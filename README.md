@@ -14,6 +14,8 @@ The pipeline publishes the AI papers graph into a Geo space in 4 sequential scri
 - `30b_papers31-90.ts` publishes papers 31-90
 - `30c_papers91-150.ts` publishes papers 91-150
 - `30d_papers151-202.ts` publishes the final papers batch
+- `31_rollback_top200.ts` rolls back entities and relations created by the `30a-30d` layers using saved `bounty_*.txt` ops files
+- `32_cleanup_top200_space.ts` finds and deletes current Top200 entities in the target space by dataset names, including legacy papers created as `Project`
 
 ## Data used
 
@@ -73,6 +75,22 @@ bun run 30b_papers31-90.ts
 bun run 30c_papers91-150.ts
 bun run 30d_papers151-202.ts
 ```
+
+Rollback dry-run / apply:
+
+```bash
+bun run 31_rollback_top200.ts
+APPLY=true CONFIRM=ROLLBACK_TOP200 bun run 31_rollback_top200.ts
+```
+
+Cleanup current space data dry-run / apply:
+
+```bash
+bun run 32_cleanup_top200_space.ts
+APPLY=true CONFIRM=DELETE_TOP200 bun run 32_cleanup_top200_space.ts
+```
+
+Both cleanup scripts default to `BATCH_SIZE=1200`. Override with `BATCH_SIZE=<n>` if you need smaller or larger transaction chunks.
 
 ## Notes
 
