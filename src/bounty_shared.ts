@@ -280,7 +280,13 @@ export async function buildPaperOps(
 
   // Authors
   const authors = (paperAuthors[pid] ?? []).map(a => a.geoId);
-  addCollectionBlock(ops, geoId, "Authors", authors, VIEWS.list, lastPos);
+  for (const authorId of authors) {
+    ops.push(...Graph.createRelation({
+      fromEntity: geoId,
+      toEntity: authorId,
+      type: SPACE_PROPS.authors,
+    }).ops);
+  }
 
   // Venue
   const venueGeoId = paperVenueId[pid];
