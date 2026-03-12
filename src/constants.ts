@@ -14,6 +14,7 @@ export const TYPES = {
   property:   "808a04ceb21c4d888ad12e240613e5ca",  // Property — meta-type for property definitions
   person:     "7ed45f2bc48b419e8e4664d5ff680b0d",
   project:    "484a18c5030a499cb0f2ef588ff16d50",
+  dataset:    "0c4babfb43893486af827341bbf32e09",  // Dataset — AI-space dataset type
   topic:      "5ef5a5860f274d8e8f6c59ae5b3e89e2",
   text_block: "76474f2f00894e77a0410b39fb17d0bf",  // Text Block — rich markdown content
   data_block: "b8803a8665de412bbb357e0c84adf473",  // Data Block — renders query or collection results
@@ -77,9 +78,9 @@ export const SPACE_PROPS = {
 
   // ── Relations (relation type IDs on Paper entities) ────────────────────────
   authors:              "5c8a2a40986a29fe3430775cc2c0fa2e",  // direct Person relations
-  venue:                "adb8047237cbc48a9bfe420b4cf8398f",
+  published_in:         "8b87530a67774d93a9aa8321b7f10019",
   related_topics:       "806d52bc27e94c9193c057978b093351",  // ≠ root PROPERTIES.topics!
-  research_lab:         "90f7b966dca840e5610645922d828f62",
+  related_projects:     "6e3503fab974460ea3dbab8af9a41427",
   peer_reviewed_by:     "f4b6a7714d934b1db24a30177a322b07",
   introduced_model:     "8ce0918670809f48b9ae52f9652c2d32",
   tags:                 "257090341ba5406f94e4d4af90042fba",

@@ -95,25 +95,3 @@ Both cleanup scripts default to `BATCH_SIZE=1200`. Override with `BATCH_SIZE=<n>
 ## Notes
 
 - Keep this bundle and your exploratory scripts separate.
-
-## Sync to GitHub repo
-
-This folder is not a git repository by itself.
-The GitHub repo for publishing lives separately at:
-
-`/Users/max/Documents/GitHub/top200_publish_release_sync_repo`
-
-Recommended workflow:
-
-- if the goal is to push to `Levash0v/Top-200-AI-papers`, treat that repo as the source of truth and edit files there directly
-- use this `publish_release/` folder as the export/snapshot copy inside the main `geo` workspace
-- if you made changes here and need to sync them into the git repo, run:
-
-```bash
-./sync_top200.sh
-cd /Users/max/Documents/GitHub/top200_publish_release_sync_repo
-git status
-git add .
-git commit -m "Update Top200 publish release"
-git push origin main
-```

@@ -1,10 +1,15 @@
 {
-  "name": "geo-sdk-demo",
+  "name": "top200-ai-papers-publish-release",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "publish-demo": "bun run demo_publish.ts",
-    "api-demo": "bun run demo_api.ts"
+    "typecheck": "tsc --noEmit",
+    "publish:30a": "bun run 30a_foundation_people_papers1-30.ts",
+    "publish:30b": "bun run 30b_papers31-90.ts",
+    "publish:30c": "bun run 30c_papers91-150.ts",
+    "publish:30d": "bun run 30d_papers151-202.ts",
+    "rollback": "bun run 31_rollback_top200.ts",
+    "cleanup": "bun run 32_cleanup_top200_space.ts"
   },
   "dependencies": {
     "@geoprotocol/geo-sdk": "^0.9.0",
@@ -15,17 +20,17 @@
     "@types/node": "^25.2.3",
     "typescript": "^5.9.3"
   },
-  "description": "- `.env` configured with `DEMO_SPACE_ID`, `PK_SW` - `bun` installed, dependencies available - A personal space on testnet to publish to - Geo Browser open in a tab: `https://geobrowser.io/space/<DEMO_SPACE_ID>` - See GRC-20 spec at: [https://github.com/geobrowser/grc-20/blob/main/spec.md](https://github.com/geobrowser/grc-20/blob/main/spec.md)",
+  "description": "Standalone publish bundle for the Top200 AI Papers Geo pipeline.",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geobrowser/geo_tech_demo.git"
+    "url": "git+https://github.com/Levash0v/Top-200-AI-papers.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/geobrowser/geo_tech_demo/issues"
+    "url": "https://github.com/Levash0v/Top-200-AI-papers/issues"
   },
-  "homepage": "https://github.com/geobrowser/geo_tech_demo#readme"
+  "homepage": "https://github.com/Levash0v/Top-200-AI-papers#readme"
 }

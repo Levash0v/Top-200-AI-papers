@@ -224,9 +224,9 @@ async function main() {
   ]);
   const projectNames = new Set([
     ...makeNameSet(venues),
-    ...makeNameSet(datasets),
     ...makeNameSet(orgs),
   ]);
+  const datasetNames = makeNameSet(datasets);
   const personNames = makeNameSet(persons);
   const paperNames = makeNameSet(papers);
 
@@ -235,14 +235,16 @@ async function main() {
   console.log("  entities with Name value in this space:", nameOwnedEntityIds.size);
 
   console.log("\nFetching current entities by type...");
-  const [topicEntities, projectEntities, personEntities, paperEntities] = await Promise.all([
+  const [topicEntities, projectEntities, datasetEntities, personEntities, paperEntities] = await Promise.all([
     fetchEntitiesByType(TYPES.topic),
     fetchEntitiesByType(TYPES.project),
+    fetchEntitiesByType(TYPES.dataset),
     fetchEntitiesByType(TYPES.person),
     fetchEntitiesByType(TYPES.paper),
   ]);
   console.log(`  topics:   ${topicEntities.length}`);
   console.log(`  projects: ${projectEntities.length}`);
+  console.log(`  datasets: ${datasetEntities.length}`);
   console.log(`  persons:  ${personEntities.length}`);
   console.log(`  papers:   ${paperEntities.length}`);
 
@@ -257,6 +259,11 @@ async function main() {
     if (!nameOwnedEntityIds.has(entity.id)) continue;
     const name = normalizeName(entity.name);
     if (projectNames.has(name) || paperNames.has(name)) targets.set(entity.id, entity);
+  }
+
+  for (const entity of datasetEntities) {
+    if (!nameOwnedEntityIds.has(entity.id)) continue;
+    if (datasetNames.has(normalizeName(entity.name))) targets.set(entity.id, entity);
   }
 
   for (const entity of paperEntities) {

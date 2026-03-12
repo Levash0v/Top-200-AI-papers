@@ -32,12 +32,13 @@ async function buildRegistries(
   concepts: ConceptData[], orgs: OrgData[], persons: PersonData[],
 ) {
   console.log("Fetching current entity IDs from AI space...");
-  const [existingProjects, existingPersons, existingTopics] = await Promise.all([
+  const [existingProjects, existingDatasets, existingPersons, existingTopics] = await Promise.all([
     fetchExistingMap(TYPES.project),
+    fetchExistingMap(TYPES.dataset),
     fetchExistingMap(TYPES.person),
     fetchExistingMap(TYPES.topic),
   ]);
-  console.log(`  ${existingProjects.size} projects · ${existingPersons.size} persons · ${existingTopics.size} topics\n`);
+  console.log(`  ${existingProjects.size} projects · ${existingDatasets.size} datasets · ${existingPersons.size} persons · ${existingTopics.size} topics\n`);
 
   const eraIds:     Record<string, string> = {};
   const domainIds:  Record<string, string> = {};
@@ -50,7 +51,7 @@ async function buildRegistries(
   for (const e of eras)     { const x = existingTopics.get(e.name.toLowerCase().trim());    if (x) eraIds[e.name]     = x; }
   for (const d of domains)  { const x = existingTopics.get(d.name.toLowerCase().trim());    if (x) domainIds[d.name]  = x; }
   for (const v of venues)   { const x = existingProjects.get(v.name.toLowerCase().trim());  if (x) venueIds[v.name]   = x; }
-  for (const d of datasets) { const x = existingProjects.get(d.name.toLowerCase().trim());  if (x) datasetIds[d.name] = x; }
+  for (const d of datasets) { const x = existingDatasets.get(d.name.toLowerCase().trim());  if (x) datasetIds[d.name] = x; }
   for (const c of concepts) { const x = existingTopics.get(c.name.toLowerCase().trim());    if (x) conceptIds[c.name] = x; }
   for (const o of orgs)     { const x = existingProjects.get(o.name.toLowerCase().trim());  if (x) orgIds[o.name]     = x; }
   for (const p of persons)  { const x = existingPersons.get(p.name.toLowerCase().trim());   if (x) personIds[p.name]  = x; }

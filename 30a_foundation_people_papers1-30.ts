@@ -51,12 +51,13 @@ async function main() {
 
   // ── Fetch existing entities for deduplication ──────────────────────────────
   console.log("Fetching existing entities from AI space...");
-  const [existingProjects, existingPersons, existingTopics] = await Promise.all([
+  const [existingProjects, existingDatasets, existingPersons, existingTopics] = await Promise.all([
     fetchExistingMap(TYPES.project),
+    fetchExistingMap(TYPES.dataset),
     fetchExistingMap(TYPES.person),
     fetchExistingMap(TYPES.topic),
   ]);
-  console.log(`  ${existingProjects.size} projects · ${existingPersons.size} persons · ${existingTopics.size} topics\n`);
+  console.log(`  ${existingProjects.size} projects · ${existingDatasets.size} datasets · ${existingPersons.size} persons · ${existingTopics.size} topics\n`);
 
   // ── ID registries ──────────────────────────────────────────────────────────
   const eraIds:     Record<string, string> = {};
@@ -74,7 +75,7 @@ async function main() {
   for (const p of persons)  { const x = existingPersons.get(p.name.toLowerCase().trim());   if (x) personIds[p.name]  = x; }
   for (const c of concepts) { const x = existingTopics.get(c.name.toLowerCase().trim());    if (x) conceptIds[c.name] = x; }
   for (const v of venues)   { const x = existingProjects.get(v.name.toLowerCase().trim());  if (x) venueIds[v.name]   = x; }
-  for (const d of datasets) { const x = existingProjects.get(d.name.toLowerCase().trim());  if (x) datasetIds[d.name] = x; }
+  for (const d of datasets) { const x = existingDatasets.get(d.name.toLowerCase().trim());  if (x) datasetIds[d.name] = x; }
 
   // ════════════════════════════════════════════════════════════════════════════
   //  BATCH 1 — Foundation
@@ -107,7 +108,7 @@ async function main() {
     const desc = [ds.description, ds.size ? `Size: ${ds.size}` : null, ds.year ? `Year: ${ds.year}` : null].filter(Boolean).join(" · ");
     const values: any[] = [];
     if (ds.web_url) values.push({ property: PROPERTIES.web_url, type: "text", value: ds.web_url });
-    const { id, ops } = Graph.createEntity({ name: ds.name, description: desc, types: [TYPES.project], values });
+    const { id, ops } = Graph.createEntity({ name: ds.name, description: desc, types: [TYPES.dataset], values });
     datasetIds[ds.name] = id; b1.push(...ops);
   }
   for (const concept of concepts) {

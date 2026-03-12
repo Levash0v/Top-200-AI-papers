@@ -8,7 +8,7 @@ import * as fs   from "fs";
 import * as path from "path";
 import { Graph, Position, type Op, ContentIds } from "@geoprotocol/geo-sdk";
 import { printOps, publishOps, gql } from "./functions";
-import { TYPES, PROPERTIES, COLLECTION_DATA_SOURCE, VIEWS } from "./constants";
+import { TYPES, PROPERTIES, SPACE_PROPS, COLLECTION_DATA_SOURCE, VIEWS } from "./constants";
 
 export const SPACE_ID   = "41e851610e13a19441c4d980f2f2ce6b";
 function resolveFirstExistingDir(candidates: string[], label: string): string {
@@ -233,11 +233,11 @@ export async function buildPaperOps(
 
   // Values
   const values: any[] = [];
-  if (paper.web_url)      values.push({ property: PROPERTIES.web_url,      type: "text", value: paper.web_url });
-  if (paper.date_founded) values.push({ property: PROPERTIES.date_founded, type: "date", value: paper.date_founded });
+  if (paper.web_url)      values.push({ property: SPACE_PROPS.web_url,          type: "text", value: paper.web_url });
+  if (paper.date_founded) values.push({ property: SPACE_PROPS.publication_date, type: "date", value: paper.date_founded });
 
   const rels: Record<string, any> = {};
-  if (topicRels.length) rels[PROPERTIES.topics] = topicRels;
+  if (topicRels.length) rels[SPACE_PROPS.related_topics] = topicRels;
 
   const { id: geoId, ops: paperOps } = Graph.createEntity({
     name: paper.name, description: paper.description,
@@ -263,7 +263,14 @@ export async function buildPaperOps(
 
   // Venue
   const venueGeoId = paperVenueId[pid];
-  if (venueGeoId) addCollectionBlock(ops, geoId, "Published In", [venueGeoId], VIEWS.list, lastPos);
+  if (venueGeoId) {
+    ops.push(...Graph.createRelation({
+      fromEntity: geoId,
+      toEntity: venueGeoId,
+      type: SPACE_PROPS.published_in,
+    }).ops);
+    addCollectionBlock(ops, geoId, "Published In", [venueGeoId], VIEWS.list, lastPos);
+  }
 
   // Datasets grouped
   const dsEntries = paperDatasets[pid] ?? [];
@@ -299,7 +306,16 @@ export async function buildPaperOps(
 
   // Organizations
   const orgEntities = paperOrgs[pid] ?? [];
-  if (orgEntities.length > 0) addCollectionBlock(ops, geoId, "Institutions", orgEntities, VIEWS.list, lastPos);
+  if (orgEntities.length > 0) {
+    for (const orgId of orgEntities) {
+      ops.push(...Graph.createRelation({
+        fromEntity: geoId,
+        toEntity: orgId,
+        type: SPACE_PROPS.related_projects,
+      }).ops);
+    }
+    addCollectionBlock(ops, geoId, "Institutions", orgEntities, VIEWS.list, lastPos);
+  }
 
   return ops;
 }
