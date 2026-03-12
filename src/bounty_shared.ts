@@ -42,6 +42,9 @@ export type PaperData   = { id: string; name: string; description: string;
                             web_url: string | null; date_founded: string | null;
                             domain: string | null; era: string | null; venue: string | null;
                             people: string[]; blocks: string[];
+                            arxiv_url?: string | null; code_url?: string | null;
+                            citation_count?: number | null; key_contribution?: string | null;
+                            doi?: string | null; abstract?: string | null; anchor_type?: string | null;
                             avatar_local?: string; cover_local?: string };
 export type RelPaperPerson  = { paper_id: string; person_name: string; role: string | null; order: number | null };
 export type RelPaperVenue   = { paper_id: string; venue_name: string };
@@ -235,6 +238,14 @@ export async function buildPaperOps(
   const values: any[] = [];
   if (paper.web_url)      values.push({ property: SPACE_PROPS.web_url,          type: "text", value: paper.web_url });
   if (paper.date_founded) values.push({ property: SPACE_PROPS.publication_date, type: "date", value: paper.date_founded });
+  if (paper.arxiv_url)    values.push({ property: SPACE_PROPS.arxiv_url,        type: "text", value: paper.arxiv_url });
+  if (paper.code_url)     values.push({ property: SPACE_PROPS.code_url,         type: "text", value: paper.code_url });
+  if (paper.key_contribution) {
+    values.push({ property: SPACE_PROPS.key_contribution, type: "text", value: paper.key_contribution });
+  }
+  if (typeof paper.citation_count === "number") {
+    values.push({ property: SPACE_PROPS.citation_count, type: "integer", value: paper.citation_count });
+  }
 
   const rels: Record<string, any> = {};
   if (topicRels.length) rels[SPACE_PROPS.related_topics] = topicRels;
@@ -254,6 +265,16 @@ export async function buildPaperOps(
     ops.push(...Graph.createRelation({
       fromEntity: geoId, toEntity: imageId,
       type: ContentIds.AVATAR_PROPERTY,
+    }).ops);
+  }
+
+  // Cover image
+  const coverId = await uploadImage(paper.cover_local, `${paper.name} cover`, ops);
+  if (coverId) {
+    ops.push(...Graph.createRelation({
+      fromEntity: geoId,
+      toEntity: coverId,
+      type: SPACE_PROPS.cover,
     }).ops);
   }
 
