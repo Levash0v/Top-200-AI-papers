@@ -15,7 +15,7 @@ import dotenv from "dotenv";
 import { Graph, type Op } from "@geoprotocol/geo-sdk";
 import {
   SPACE_ID, BOUNTY, DRY_RUN,
-  load, fetchExistingMap, publishBatch, buildPaperLookups, buildPaperOps,
+  load, fetchExistingMap, publishBatch, buildPaperLookups, buildPaperOps, normalizeEntityName,
   type EraData, type DomainData, type VenueData, type DatasetData,
   type ConceptData, type OrgData, type PersonData, type PaperData,
   type RelPaperPerson, type RelPaperVenue, type RelPaperDataset,
@@ -51,13 +51,14 @@ async function main() {
 
   // ── Fetch existing entities for deduplication ──────────────────────────────
   console.log("Fetching existing entities from AI space...");
-  const [existingProjects, existingDatasets, existingPersons, existingTopics] = await Promise.all([
+  const [existingProjects, existingDatasets, existingPersons, existingTopics, existingPapers] = await Promise.all([
     fetchExistingMap(TYPES.project),
     fetchExistingMap(TYPES.dataset),
     fetchExistingMap(TYPES.person),
     fetchExistingMap(TYPES.topic),
+    fetchExistingMap(TYPES.paper),
   ]);
-  console.log(`  ${existingProjects.size} projects · ${existingDatasets.size} datasets · ${existingPersons.size} persons · ${existingTopics.size} topics\n`);
+  console.log(`  ${existingProjects.size} projects · ${existingDatasets.size} datasets · ${existingPersons.size} persons · ${existingTopics.size} topics · ${existingPapers.size} papers\n`);
 
   // ── ID registries ──────────────────────────────────────────────────────────
   const eraIds:     Record<string, string> = {};
@@ -159,6 +160,11 @@ async function main() {
   console.log("\nBuilding Papers 1-15...");
   const b3: Op[] = [];
   for (const paper of papers.slice(0, 15)) {
+    const existingPaperId = existingPapers.get(normalizeEntityName(paper.name));
+    if (existingPaperId) {
+      console.log(`  ⏭️  ${paper.name.slice(0, 60)} (already exists: ${existingPaperId})`);
+      continue;
+    }
     console.log(`  📄 ${paper.name.slice(0, 60)}`);
     b3.push(...await buildPaperOps(paper, lookups));
   }
@@ -170,6 +176,11 @@ async function main() {
   console.log("\nBuilding Papers 16-30...");
   const b4: Op[] = [];
   for (const paper of papers.slice(15, 30)) {
+    const existingPaperId = existingPapers.get(normalizeEntityName(paper.name));
+    if (existingPaperId) {
+      console.log(`  ⏭️  ${paper.name.slice(0, 60)} (already exists: ${existingPaperId})`);
+      continue;
+    }
     console.log(`  📄 ${paper.name.slice(0, 60)}`);
     b4.push(...await buildPaperOps(paper, lookups));
   }

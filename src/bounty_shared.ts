@@ -10,7 +10,7 @@ import { Graph, Position, type Op, ContentIds } from "@geoprotocol/geo-sdk";
 import { printOps, publishOps, gql } from "./functions";
 import { TYPES, PROPERTIES, SPACE_PROPS, COLLECTION_DATA_SOURCE, VIEWS } from "./constants";
 
-export const SPACE_ID   = "41e851610e13a19441c4d980f2f2ce6b";
+export const SPACE_ID   = process.env.DEMO_SPACE_ID ?? "41e851610e13a19441c4d980f2f2ce6b";
 function resolveFirstExistingDir(candidates: string[], label: string): string {
   for (const candidate of candidates) {
     const resolved = path.resolve(candidate);
@@ -62,6 +62,10 @@ export function load<T>(file: string): T[] {
   return JSON.parse(fs.readFileSync(p, "utf-8")) as T[];
 }
 
+export function normalizeEntityName(name: string): string {
+  return name.toLowerCase().trim();
+}
+
 // ─── Fetch name→id map from space ────────────────────────────────────────────
 
 export async function fetchExistingMap(typeId: string): Promise<Map<string, string>> {
@@ -75,7 +79,7 @@ export async function fetchExistingMap(typeId: string): Promise<Map<string, stri
     ) { id name }
   }`);
   for (const e of data?.entities ?? []) {
-    if (e.name) map.set(e.name.toLowerCase().trim(), e.id);
+    if (e.name) map.set(normalizeEntityName(e.name), e.id);
   }
   return map;
 }
