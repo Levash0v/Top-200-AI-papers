@@ -70,17 +70,27 @@ export function normalizeEntityName(name: string): string {
 
 export async function fetchExistingMap(typeId: string): Promise<Map<string, string>> {
   const map = new Map<string, string>();
-  const data = await gql(`{
-    entities(
-      spaceId: "${SPACE_ID}"
-      typeId:  "${typeId}"
-      first:   1000
-      filter:  { name: { isNull: false } }
-    ) { id name }
-  }`);
-  for (const e of data?.entities ?? []) {
-    if (e.name) map.set(normalizeEntityName(e.name), e.id);
+  const pageSize = 1000;
+  let offset = 0;
+
+  while (true) {
+    const data = await gql(`{
+      entities(
+        spaceId: "${SPACE_ID}"
+        typeId:  "${typeId}"
+        first:   ${pageSize}
+        offset:  ${offset}
+        filter:  { name: { isNull: false } }
+      ) { id name }
+    }`);
+    const entities = data?.entities ?? [];
+    for (const e of entities) {
+      if (e.name) map.set(normalizeEntityName(e.name), e.id);
+    }
+    if (entities.length < pageSize) break;
+    offset += pageSize;
   }
+
   return map;
 }
 
