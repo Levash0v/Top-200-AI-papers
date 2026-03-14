@@ -446,6 +446,7 @@ def main() -> None:
     parser.add_argument("--out", dest="outfile", default="Geo_papers_schema_v2_verified.xlsx")
     parser.add_argument("--report", dest="report", default="paper_verification_report.csv")
     parser.add_argument("--json-report", dest="json_report", default="paper_verification_report.json")
+    parser.add_argument("--offset", type=int, default=0)
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--sleep", type=float, default=0.35)
     parser.add_argument("--cache", default=DEFAULT_CACHE)
@@ -460,9 +461,7 @@ def main() -> None:
     cache = load_cache(cache_path)
 
     sheets = pd.read_excel(infile, sheet_name=None)
-    papers = sheets["Papers"].copy()
-    if args.limit > 0:
-        papers = papers.head(args.limit).copy()
+    papers_full = sheets["Papers"].copy()
 
     qa_columns = [
         "Semantic Scholar URL",
@@ -485,7 +484,13 @@ def main() -> None:
         "Needs editorial review",
         "Needs manual review",
     ]
-    papers = ensure_columns(papers, qa_columns)
+    papers_full = ensure_columns(papers_full, qa_columns)
+    start = max(args.offset, 0)
+    if args.limit > 0:
+        end = min(start + args.limit, len(papers_full))
+    else:
+        end = len(papers_full)
+    papers = papers_full.iloc[start:end].copy()
 
     report_rows = []
     for idx, row in papers.iterrows():
@@ -507,7 +512,7 @@ def main() -> None:
         if args.fill_only:
             report = apply_fill_only(row, report)
         for key, value in report.items():
-            papers.at[idx, key] = value
+            papers_full.at[idx, key] = value
         report_rows.append(
             {
                 "Name": title,
@@ -520,7 +525,7 @@ def main() -> None:
         )
 
     out_sheets = dict(sheets)
-    out_sheets["Papers"] = papers
+    out_sheets["Papers"] = papers_full
     report_df = pd.DataFrame(report_rows)
     out_sheets["Verification_Report"] = report_df
 
@@ -536,6 +541,7 @@ def main() -> None:
     print(f"Saved CSV report: {report_csv}")
     print(f"Saved JSON report: {report_json}")
     print(f"Rows processed: {len(papers)}")
+    print(f"Row range: {start}..{end}")
 
 
 if __name__ == "__main__":
