@@ -44,6 +44,7 @@ export type PaperData   = { id: string; name: string; description: string;
                             people: string[]; blocks: string[];
                             arxiv_url?: string | null; code_url?: string | null;
                             citation_count?: number | null; key_contribution?: string | null;
+                            semantic_scholar_url?: string | null; peer_reviewed_by?: string | null;
                             doi?: string | null; abstract?: string | null; anchor_type?: string | null;
                             avatar_local?: string; cover_local?: string };
 export type RelPaperPerson  = { paper_id: string; person_name: string; role: string | null; order: number | null };
@@ -229,7 +230,7 @@ export function buildPaperLookups(
     if (!paperOrgs[r.paper_id].includes(g)) paperOrgs[r.paper_id].push(g);
   }
 
-  return { paperAuthors, paperVenueId, paperDatasets, paperConcepts, paperOrgs, paperEraId, paperDomainId };
+  return { paperAuthors, paperVenueId, paperDatasets, paperConcepts, paperOrgs, paperEraId, paperDomainId, venueIds };
 }
 
 // ─── Build ops for one paper ──────────────────────────────────────────────────
@@ -241,7 +242,7 @@ export async function buildPaperOps(
   const ops: Op[] = [];
   const lastPos: Record<string, string> = {};
   const pid = paper.id;
-  const { paperAuthors, paperVenueId, paperDatasets, paperConcepts, paperOrgs, paperEraId, paperDomainId } = lookups;
+  const { paperAuthors, paperVenueId, paperDatasets, paperConcepts, paperOrgs, paperEraId, paperDomainId, venueIds } = lookups;
 
   // Topics: domain + era
   const topicRels: Array<{ toEntity: string }> = [];
@@ -254,6 +255,9 @@ export async function buildPaperOps(
   if (paper.date_founded) values.push({ property: SPACE_PROPS.publication_date, type: "date", value: paper.date_founded });
   if (paper.arxiv_url)    values.push({ property: SPACE_PROPS.arxiv_url,        type: "text", value: paper.arxiv_url });
   if (paper.code_url)     values.push({ property: SPACE_PROPS.code_url,         type: "text", value: paper.code_url });
+  if (paper.semantic_scholar_url) {
+    values.push({ property: SPACE_PROPS.semantic_scholar_url, type: "text", value: paper.semantic_scholar_url });
+  }
   if (paper.key_contribution) {
     values.push({ property: SPACE_PROPS.key_contribution, type: "text", value: paper.key_contribution });
   }
@@ -311,6 +315,15 @@ export async function buildPaperOps(
       type: SPACE_PROPS.published_in,
     }).ops);
     addCollectionBlock(ops, geoId, "Published In", [venueGeoId], VIEWS.list, lastPos);
+  }
+
+  const peerReviewedByGeoId = paper.peer_reviewed_by ? venueIds[paper.peer_reviewed_by] : undefined;
+  if (peerReviewedByGeoId) {
+    ops.push(...Graph.createRelation({
+      fromEntity: geoId,
+      toEntity: peerReviewedByGeoId,
+      type: SPACE_PROPS.peer_reviewed_by,
+    }).ops);
   }
 
   // Datasets grouped

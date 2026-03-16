@@ -55,6 +55,29 @@ def canonicalize_venue_name(name):
         return None
     return SAFE_VENUE_RENAMES.get(v, v)
 
+NON_PEER_REVIEWED_VENUES = {
+    "arXiv",
+    "technical report",
+    "tech report",
+    "working paper",
+    "preprint",
+}
+
+PEER_REVIEWED_VENUES = set()
+
+def derive_peer_reviewed_by(explicit_value, venue_name):
+    explicit = canonicalize_venue_name(explicit_value)
+    if explicit and explicit in PEER_REVIEWED_VENUES:
+        return explicit
+    venue = canonicalize_venue_name(venue_name)
+    if not venue:
+        return None
+    if venue.strip().lower() in NON_PEER_REVIEWED_VENUES:
+        return None
+    if venue in PEER_REVIEWED_VENUES:
+        return venue
+    return None
+
 # ── 1. eras ───────────────────────────────────────────────────────────────────
 eras_df = load("Eras")
 eras = []
@@ -94,6 +117,10 @@ for _, r in venues_df.iterrows():
         "since":       int(r["Since"]) if safe(r["Since"]) else None,
         "web_url":     safe(r["Web URL"]),
     })
+PEER_REVIEWED_VENUES = {
+    venue["name"] for venue in venues
+    if venue["name"] and venue.get("type") in {"Conference", "Journal"}
+}
 json.dump(venues, open(f"{OUT}/venues.json", "w"), indent=2, ensure_ascii=False)
 print(f"venues.json:       {len(venues)}")
 
@@ -236,6 +263,8 @@ for _, r in papers_df.iterrows():
         "code_url":         code_url,
         "citation_count":   int(float(cit)) if cit else None,
         "key_contribution": safe(r.get("Key contribution")),
+        "semantic_scholar_url": safe(r.get("Semantic Scholar URL")),
+        "peer_reviewed_by": derive_peer_reviewed_by(r.get("Peer-reviewed by"), venue),
         "doi":              doi,
         "abstract":         abstract,
         "anchor_type":      anchor,

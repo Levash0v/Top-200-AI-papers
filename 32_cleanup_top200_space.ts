@@ -340,7 +340,7 @@ async function main() {
   }
 
   for (const entityId of [...targetIdsInDeleteOrder].reverse()) {
-    const { ops } = Graph.deleteEntity({ id: entityId });
+    const { ops } = await Graph.deleteEntity({ id: entityId, spaceId: SPACE_ID });
     cleanupOps.push(...ops);
   }
 
