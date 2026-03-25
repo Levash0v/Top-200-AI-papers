@@ -21,39 +21,52 @@ function resolveFirstExistingDir(candidates: string[], label: string): string {
   );
 }
 
-export const DATA_DIR   = resolveFirstExistingDir(["./geo_publish_v2", "../geo_publish_v2"], "Data");
+export const DATA_DIR   = resolveFirstExistingDir(
+  ["./geo_publish_v2_ontology", "../geo_publish_v2_ontology", "./geo_publish_v2", "../geo_publish_v2"],
+  "Data",
+);
 export const IMAGES_DIR = resolveFirstExistingDir(["./paper_images_202", "../paper_images_202"], "Images");
 export const DRY_RUN    = process.env.DRY_RUN === "1";
 export const NETWORK    = "TESTNET" as const;
 export const BOUNTY     = "Bounty Top200 AI Papers";
+export const PILOT_PAPER_ID = process.env.PILOT_PAPER_ID?.trim() || null;
+export const PILOT_PAPER_NAME = process.env.PILOT_PAPER_NAME?.trim() || null;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type EraData     = { id: string; name: string; description: string; years: string | null };
-export type DomainData  = { id: string; name: string; description: string };
-export type VenueData   = { id: string; name: string; short_name: string | null; type: string | null;
+export type TopicData   = { id: string; name: string; topic_kind: "Domain" | "Concept" | string;
+                            description: string | null; parent_topic?: string | null };
+export type TagData     = { id: string; name: string; tag_kind: "Era" | "Anchor Type" | string;
+                            description: string | null; years?: string | null };
+export type VenueData   = { id: string; name: string; short_name: string | null; type: "Conference" | "Journal" | string | null;
                             description: string | null; since: number | null; web_url: string | null };
 export type DatasetData = { id: string; name: string; description: string; domain: string | null;
                             year: number | null; size: string | null; web_url: string | null };
-export type ConceptData = { id: string; name: string; description: string };
 export type OrgData     = { id: string; name: string; type: string | null; country: string | null; web_url: string | null };
 export type PersonData  = { id: string; name: string; description: string; web_url: string | null };
 export type PaperData   = { id: string; name: string; description: string;
-                            web_url: string | null; date_founded: string | null;
-                            domain: string | null; era: string | null; venue: string | null;
-                            people: string[]; blocks: string[];
+                            web_url: string | null; publication_date: string | null;
                             arxiv_url?: string | null; code_url?: string | null;
                             citation_count?: number | null; key_contribution?: string | null;
                             semantic_scholar_url?: string | null; peer_reviewed_by?: string | null;
-                            doi?: string | null; abstract?: string | null; anchor_type?: string | null;
-                            avatar_local?: string; cover_local?: string };
+                            doi?: string | null; abstract?: string | null;
+                            primary_venue_name?: string | null; primary_venue_type?: string | null;
+                            image_avatar?: string | null; image_cover?: string | null;
+                            year?: string | null; year_normalized_citations?: string | null;
+                            composite_score?: string | null; graph_degree?: string | null };
 export type RelPaperPerson  = { paper_id: string; person_name: string; role: string | null; order: number | null };
-export type RelPaperVenue   = { paper_id: string; venue_name: string };
+export type RelPaperVenue   = { paper_id: string; venue_name: string; venue_class?: string | null };
 export type RelPaperDataset = { paper_id: string; dataset_name: string; relation: string };
-export type RelPaperConcept = { paper_id: string; concept_name: string; relation: string };
+export type RelPaperTopic   = { paper_id: string; topic_name: string; topic_kind: string; relation: string };
 export type RelPaperOrg     = { paper_id: string; org_name: string };
-export type RelPaperEra     = { paper_id: string; era_name: string };
-export type RelPaperDomain  = { paper_id: string; domain_name: string };
+export type RelPaperTag     = { paper_id: string; tag_name: string; tag_kind: string; relation: string };
+// Backward-compatible aliases for scripts not yet rewritten.
+export type EraData = TagData;
+export type DomainData = TopicData;
+export type ConceptData = TopicData;
+export type RelPaperConcept = RelPaperTopic;
+export type RelPaperEra = RelPaperTag;
+export type RelPaperDomain = RelPaperTopic;
 
 // ─── Load JSON ───────────────────────────────────────────────────────────────
 
@@ -65,6 +78,15 @@ export function load<T>(file: string): T[] {
 
 export function normalizeEntityName(name: string): string {
   return name.toLowerCase().trim();
+}
+
+export function filterPapersForPilot<T extends { id: string; name: string }>(papers: T[]): T[] {
+  if (!PILOT_PAPER_ID && !PILOT_PAPER_NAME) return papers;
+  return papers.filter((paper) => {
+    if (PILOT_PAPER_ID && paper.id === PILOT_PAPER_ID) return true;
+    if (PILOT_PAPER_NAME && normalizeEntityName(paper.name) === normalizeEntityName(PILOT_PAPER_NAME)) return true;
+    return false;
+  });
 }
 
 // ─── Fetch name→id map from space ────────────────────────────────────────────
@@ -93,6 +115,17 @@ export async function fetchExistingMap(typeId: string): Promise<Map<string, stri
   }
 
   return map;
+}
+
+export async function fetchExistingMaps(typeIds: string[]): Promise<Map<string, string>> {
+  const merged = new Map<string, string>();
+  for (const typeId of typeIds.filter(Boolean)) {
+    const map = await fetchExistingMap(typeId);
+    for (const [name, id] of map.entries()) {
+      if (!merged.has(name)) merged.set(name, id);
+    }
+  }
+  return merged;
 }
 
 // ─── Image upload ─────────────────────────────────────────────────────────────
@@ -183,25 +216,22 @@ export function buildPaperLookups(
   relPaperPerson:  RelPaperPerson[],
   relPaperVenue:   RelPaperVenue[],
   relPaperDataset: RelPaperDataset[],
-  relPaperConcept: RelPaperConcept[],
+  relPaperTopic:   RelPaperTopic[],
   relPaperOrg:     RelPaperOrg[],
-  relPaperEra:     RelPaperEra[],
-  relPaperDomain:  RelPaperDomain[],
+  relPaperTag:     RelPaperTag[],
   personIds:  Record<string, string>,
   venueIds:   Record<string, string>,
   datasetIds: Record<string, string>,
-  conceptIds: Record<string, string>,
+  topicIds:   Record<string, string>,
   orgIds:     Record<string, string>,
-  eraIds:     Record<string, string>,
-  domainIds:  Record<string, string>,
+  tagIds:     Record<string, string>,
 ) {
   const paperAuthors:  Record<string, Array<{ geoId: string; order: number }>> = {};
   const paperVenueId:  Record<string, string>                                  = {};
   const paperDatasets: Record<string, Array<{ geoId: string; relation: string }>> = {};
-  const paperConcepts: Record<string, Array<{ geoId: string; relation: string }>> = {};
+  const paperTopics:   Record<string, Array<{ geoId: string; relation: string; topicKind: string }>> = {};
+  const paperTags:     Record<string, string[]> = {};
   const paperOrgs:     Record<string, string[]>                                = {};
-  const paperEraId:    Record<string, string>                                  = {};
-  const paperDomainId: Record<string, string>                                  = {};
 
   for (const r of relPaperPerson) {
     const g = personIds[r.person_name]; if (!g) continue;
@@ -211,18 +241,21 @@ export function buildPaperLookups(
   for (const key of Object.keys(paperAuthors)) paperAuthors[key].sort((a, b) => a.order - b.order);
 
   for (const r of relPaperVenue)   { const g = venueIds[r.venue_name];    if (g) paperVenueId[r.paper_id]  = g; }
-  for (const r of relPaperEra)     { const g = eraIds[r.era_name];        if (g) paperEraId[r.paper_id]    = g; }
-  for (const r of relPaperDomain)  { const g = domainIds[r.domain_name];  if (g) paperDomainId[r.paper_id] = g; }
 
   for (const r of relPaperDataset) {
     const g = datasetIds[r.dataset_name]; if (!g) continue;
     if (!paperDatasets[r.paper_id]) paperDatasets[r.paper_id] = [];
     paperDatasets[r.paper_id].push({ geoId: g, relation: r.relation });
   }
-  for (const r of relPaperConcept) {
-    const g = conceptIds[r.concept_name]; if (!g) continue;
-    if (!paperConcepts[r.paper_id]) paperConcepts[r.paper_id] = [];
-    paperConcepts[r.paper_id].push({ geoId: g, relation: r.relation });
+  for (const r of relPaperTopic) {
+    const g = topicIds[r.topic_name]; if (!g) continue;
+    if (!paperTopics[r.paper_id]) paperTopics[r.paper_id] = [];
+    paperTopics[r.paper_id].push({ geoId: g, relation: r.relation, topicKind: r.topic_kind });
+  }
+  for (const r of relPaperTag) {
+    const g = tagIds[r.tag_name]; if (!g) continue;
+    if (!paperTags[r.paper_id]) paperTags[r.paper_id] = [];
+    if (!paperTags[r.paper_id].includes(g)) paperTags[r.paper_id].push(g);
   }
   for (const r of relPaperOrg) {
     const g = orgIds[r.org_name]; if (!g) continue;
@@ -230,7 +263,7 @@ export function buildPaperLookups(
     if (!paperOrgs[r.paper_id].includes(g)) paperOrgs[r.paper_id].push(g);
   }
 
-  return { paperAuthors, paperVenueId, paperDatasets, paperConcepts, paperOrgs, paperEraId, paperDomainId, venueIds };
+  return { paperAuthors, paperVenueId, paperDatasets, paperTopics, paperTags, paperOrgs, venueIds };
 }
 
 // ─── Build ops for one paper ──────────────────────────────────────────────────
@@ -242,17 +275,17 @@ export async function buildPaperOps(
   const ops: Op[] = [];
   const lastPos: Record<string, string> = {};
   const pid = paper.id;
-  const { paperAuthors, paperVenueId, paperDatasets, paperConcepts, paperOrgs, paperEraId, paperDomainId, venueIds } = lookups;
+  const { paperAuthors, paperVenueId, paperDatasets, paperTopics, paperTags, paperOrgs, venueIds } = lookups;
 
-  // Topics: domain + era
+  // Topics and tags
   const topicRels: Array<{ toEntity: string }> = [];
-  if (paperDomainId[pid]) topicRels.push({ toEntity: paperDomainId[pid] });
-  if (paperEraId[pid])    topicRels.push({ toEntity: paperEraId[pid] });
+  for (const entry of (paperTopics[pid] ?? [])) topicRels.push({ toEntity: entry.geoId });
+  const tagRels = (paperTags[pid] ?? []).map((toEntity) => ({ toEntity }));
 
   // Values
   const values: any[] = [];
   if (paper.web_url)      values.push({ property: SPACE_PROPS.web_url,          type: "text", value: paper.web_url });
-  if (paper.date_founded) values.push({ property: SPACE_PROPS.publication_date, type: "date", value: paper.date_founded });
+  if (paper.publication_date) values.push({ property: SPACE_PROPS.publication_date, type: "date", value: paper.publication_date });
   if (paper.arxiv_url)    values.push({ property: SPACE_PROPS.arxiv_url,        type: "text", value: paper.arxiv_url });
   if (paper.code_url)     values.push({ property: SPACE_PROPS.code_url,         type: "text", value: paper.code_url });
   if (paper.semantic_scholar_url) {
@@ -267,6 +300,7 @@ export async function buildPaperOps(
 
   const rels: Record<string, any> = {};
   if (topicRels.length) rels[SPACE_PROPS.related_topics] = topicRels;
+  if (tagRels.length) rels[SPACE_PROPS.tags] = tagRels;
 
   const { id: geoId, ops: paperOps } = Graph.createEntity({
     name: paper.name, description: paper.description,
@@ -274,11 +308,8 @@ export async function buildPaperOps(
   });
   ops.push(...paperOps);
 
-  // Text blocks
-  for (const content of paper.blocks) addTextBlock(ops, geoId, content, lastPos);
-
   // Avatar image
-  const imageId = await uploadImage(paper.avatar_local, `${paper.name} avatar`, ops);
+  const imageId = await uploadImage(paper.image_avatar ?? undefined, `${paper.name} avatar`, ops);
   if (imageId) {
     ops.push(...Graph.createRelation({
       fromEntity: geoId, toEntity: imageId,
@@ -287,7 +318,7 @@ export async function buildPaperOps(
   }
 
   // Cover image
-  const coverId = await uploadImage(paper.cover_local, `${paper.name} cover`, ops);
+  const coverId = await uploadImage(paper.image_cover ?? undefined, `${paper.name} cover`, ops);
   if (coverId) {
     ops.push(...Graph.createRelation({
       fromEntity: geoId,
@@ -342,11 +373,11 @@ export async function buildPaperOps(
     }
   }
 
-  // Concepts grouped
-  const cptEntries = paperConcepts[pid] ?? [];
-  if (cptEntries.length > 0) {
+  // Topics grouped (concept-like rows are the most useful in collection blocks)
+  const topicEntries = (paperTopics[pid] ?? []).filter((entry) => entry.topicKind === "Concept");
+  if (topicEntries.length > 0) {
     const groups: Record<string, string[]> = {};
-    for (const { geoId: cId, relation } of cptEntries) {
+    for (const { geoId: cId, relation } of topicEntries) {
       if (!groups[relation]) groups[relation] = [];
       groups[relation].push(cId);
     }

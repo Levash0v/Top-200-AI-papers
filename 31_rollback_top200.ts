@@ -202,7 +202,7 @@ async function main() {
   }
 
   for (const entityId of entityIdsToDelete.reverse()) {
-    const { ops } = await Graph.deleteEntity({ id: entityId, spaceId: SPACE_ID });
+    const { ops } = await Graph.deleteEntity({ id: entityId });
     rollbackOps.push(...ops);
   }
 

@@ -16,6 +16,9 @@ export const TYPES = {
   project:    "484a18c5030a499cb0f2ef588ff16d50",
   dataset:    "0c4babfb43893486af827341bbf32e09",  // Dataset — AI-space dataset type
   topic:      "5ef5a5860f274d8e8f6c59ae5b3e89e2",
+  // Until the live ontology IDs are confirmed in env, fall back to currently working types.
+  tag:        process.env.GEO_TAG_TYPE_ID || "5ef5a5860f274d8e8f6c59ae5b3e89e2",
+  journal:    process.env.GEO_JOURNAL_TYPE_ID || "484a18c5030a499cb0f2ef588ff16d50",
   text_block: "76474f2f00894e77a0410b39fb17d0bf",  // Text Block — rich markdown content
   data_block: "b8803a8665de412bbb357e0c84adf473",  // Data Block — renders query or collection results
   image:      "ba4e41460010499da0a3caaa7f579d0e",  // Image — media entity with IPFS URL

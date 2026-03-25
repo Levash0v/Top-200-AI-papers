@@ -3,13 +3,12 @@ import { ContentIds, Graph, type Op } from "@geoprotocol/geo-sdk";
 import { gql, printOps, publishOps } from "./src/functions";
 import {
   load,
-  type ConceptData,
   type DatasetData,
-  type DomainData,
-  type EraData,
   type OrgData,
   type PaperData,
   type PersonData,
+  type TagData,
+  type TopicData,
   type VenueData,
 } from "./src/bounty_shared";
 import { PROPERTIES, TYPES } from "./src/constants";
@@ -208,20 +207,20 @@ async function main() {
   console.log("Batch size:", BATCH_SIZE);
   console.log("Keep matched persons:", KEEP_MATCHED_PERSONS);
 
-  const eras = load<EraData>("eras.json");
-  const domains = load<DomainData>("domains.json");
-  const venues = load<VenueData>("venues.json");
+  const topics = load<TopicData>("topics.json");
+  const tags = load<TagData>("tags.json");
+  const conferenceVenues = load<VenueData>("venues_conference.json");
+  const journalVenues = load<VenueData>("venues_journal.json");
+  const venues = [...conferenceVenues, ...journalVenues];
   const datasets = load<DatasetData>("datasets.json");
-  const concepts = load<ConceptData>("concepts.json");
   const orgs = load<OrgData>("organizations.json");
   const persons = load<PersonData>("persons.json");
   const papers = load<PaperData>("papers.json");
 
   const topicNames = new Set([
-    ...makeNameSet(eras),
-    ...makeNameSet(domains),
-    ...makeNameSet(concepts),
+    ...makeNameSet(topics),
   ]);
+  const tagNames = makeNameSet(tags);
   const projectNames = new Set([
     ...makeNameSet(venues),
     ...makeNameSet(orgs),
@@ -252,7 +251,8 @@ async function main() {
 
   for (const entity of topicEntities) {
     if (!nameOwnedEntityIds.has(entity.id)) continue;
-    if (topicNames.has(normalizeName(entity.name))) targets.set(entity.id, entity);
+    const normalized = normalizeName(entity.name);
+    if (topicNames.has(normalized) || tagNames.has(normalized)) targets.set(entity.id, entity);
   }
 
   for (const entity of projectEntities) {
@@ -340,7 +340,7 @@ async function main() {
   }
 
   for (const entityId of [...targetIdsInDeleteOrder].reverse()) {
-    const { ops } = await Graph.deleteEntity({ id: entityId, spaceId: SPACE_ID });
+    const { ops } = await Graph.deleteEntity({ id: entityId });
     cleanupOps.push(...ops);
   }
 
