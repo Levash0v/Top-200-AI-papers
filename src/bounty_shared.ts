@@ -341,7 +341,6 @@ export async function buildPaperOps(
   lookups: ReturnType<typeof buildPaperLookups>,
 ): Promise<Op[]> {
   const ops: Op[] = [];
-  const lastPos: Record<string, string> = {};
   const pid = paper.id;
   const { paperAuthors, paperVenueId, paperDatasets, paperTopics, paperTags, paperOrgs, venueIds } = lookups;
 
@@ -400,7 +399,6 @@ export async function buildPaperOps(
       toEntity: venueGeoId,
       type: SPACE_PROPS.published_in,
     }).ops);
-    addCollectionBlock(ops, geoId, "Published In", [venueGeoId], VIEWS.list, lastPos);
   }
 
   const peerReviewedByGeoId = paper.peer_reviewed_by ? venueIds[paper.peer_reviewed_by] : undefined;
@@ -410,38 +408,6 @@ export async function buildPaperOps(
       toEntity: peerReviewedByGeoId,
       type: SPACE_PROPS.peer_reviewed_by,
     }).ops);
-  }
-
-  // Datasets grouped
-  const dsEntries = paperDatasets[pid] ?? [];
-  if (dsEntries.length > 0) {
-    const groups: Record<string, string[]> = {};
-    for (const { geoId: dsId, relation } of dsEntries) {
-      if (!groups[relation]) groups[relation] = [];
-      groups[relation].push(dsId);
-    }
-    const labelMap: Record<string, string> = {
-      EVALUATES_ON: "Evaluated On", INTRODUCES: "Introduces Dataset", USES: "Uses Dataset",
-    };
-    for (const [rel, ids] of Object.entries(groups)) {
-      addCollectionBlock(ops, geoId, labelMap[rel] ?? rel, ids, VIEWS.gallery, lastPos);
-    }
-  }
-
-  // Topics grouped (concept-like rows are the most useful in collection blocks)
-  const topicEntries = (paperTopics[pid] ?? []).filter((entry) => entry.topicKind === "Concept");
-  if (topicEntries.length > 0) {
-    const groups: Record<string, string[]> = {};
-    for (const { geoId: cId, relation } of topicEntries) {
-      if (!groups[relation]) groups[relation] = [];
-      groups[relation].push(cId);
-    }
-    const labelMap: Record<string, string> = {
-      INTRODUCES: "Introduces", USES: "Uses", RELATED_TO: "Related Concepts",
-    };
-    for (const [rel, ids] of Object.entries(groups)) {
-      addCollectionBlock(ops, geoId, labelMap[rel] ?? rel, ids, VIEWS.bullets, lastPos);
-    }
   }
 
   // Organizations
@@ -454,7 +420,6 @@ export async function buildPaperOps(
         type: SPACE_PROPS.related_projects,
       }).ops);
     }
-    addCollectionBlock(ops, geoId, "Institutions", orgEntities, VIEWS.list, lastPos);
   }
 
   return ops;
