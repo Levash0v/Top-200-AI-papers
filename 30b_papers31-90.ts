@@ -17,7 +17,7 @@ import dotenv from "dotenv";
 import { type Op } from "@geoprotocol/geo-sdk";
 import {
   SPACE_ID, BOUNTY, DRY_RUN, PILOT_PAPER_ID, PILOT_PAPER_NAME,
-  load, fetchExistingMap, fetchExistingMaps, publishBatch, buildPaperLookups, buildPaperOps, normalizeEntityName, filterPapersForPilot,
+  load, fetchExistingMap, fetchExistingMaps, publishBatch, buildPaperLookups, buildPaperOps, buildExistingPaperAugmentOps, normalizeEntityName, filterPapersForPilot,
   type PaperData, type RelPaperPerson, type RelPaperVenue, type RelPaperDataset,
   type RelPaperTopic, type RelPaperOrg, type RelPaperTag,
   type TopicData, type TagData, type VenueData, type DatasetData,
@@ -106,6 +106,7 @@ async function main() {
     const existingPaperId = existingPapers.get(normalizeEntityName(paper.name));
     if (existingPaperId) {
       console.log(`  ⏭️  ${paper.name.slice(0, 60)} (already exists: ${existingPaperId})`);
+      b5.push(...await buildExistingPaperAugmentOps(existingPaperId, paper, lookups));
       continue;
     }
     console.log(`  📄 ${paper.name.slice(0, 60)}`);
@@ -122,6 +123,7 @@ async function main() {
     const existingPaperId = existingPapers.get(normalizeEntityName(paper.name));
     if (existingPaperId) {
       console.log(`  ⏭️  ${paper.name.slice(0, 60)} (already exists: ${existingPaperId})`);
+      b6.push(...await buildExistingPaperAugmentOps(existingPaperId, paper, lookups));
       continue;
     }
     console.log(`  📄 ${paper.name.slice(0, 60)}`);
@@ -138,6 +140,7 @@ async function main() {
     const existingPaperId = existingPapers.get(normalizeEntityName(paper.name));
     if (existingPaperId) {
       console.log(`  ⏭️  ${paper.name.slice(0, 60)} (already exists: ${existingPaperId})`);
+      b7.push(...await buildExistingPaperAugmentOps(existingPaperId, paper, lookups));
       continue;
     }
     console.log(`  📄 ${paper.name.slice(0, 60)}`);
@@ -154,6 +157,7 @@ async function main() {
     const existingPaperId = existingPapers.get(normalizeEntityName(paper.name));
     if (existingPaperId) {
       console.log(`  ⏭️  ${paper.name.slice(0, 60)} (already exists: ${existingPaperId})`);
+      b8.push(...await buildExistingPaperAugmentOps(existingPaperId, paper, lookups));
       continue;
     }
     console.log(`  📄 ${paper.name.slice(0, 60)}`);
