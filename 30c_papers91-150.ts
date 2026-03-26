@@ -52,7 +52,7 @@ async function buildRegistries(
 
   for (const t of topics)   { const x = existingTopics.get(t.name.toLowerCase().trim());    if (x) topicIds[t.name]   = x; }
   for (const t of tags)     { const x = existingTags.get(t.name.toLowerCase().trim()) ?? existingTopics.get(t.name.toLowerCase().trim()); if (x) tagIds[t.name] = x; }
-  const existingAnyVenue = await fetchExistingMaps([TYPES.project, TYPES.journal]);
+  const existingAnyVenue = await fetchExistingMaps([TYPES.event, TYPES.journal]);
   for (const v of venues)   { const x = existingAnyVenue.get(v.name.toLowerCase().trim());  if (x) venueIds[v.name]   = x; }
   for (const d of datasets) { const x = existingDatasets.get(d.name.toLowerCase().trim());  if (x) datasetIds[d.name] = x; }
   for (const o of orgs)     { const x = existingProjects.get(o.name.toLowerCase().trim());  if (x) orgIds[o.name]     = x; }

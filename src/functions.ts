@@ -132,6 +132,7 @@ export async function publishOps(ops: Op[], editName: string) {
       name: editName,
       ops,
       author: callerSpaceId,
+      votingMode: "SLOW",
       network: "TESTNET",
       callerSpaceId: `0x${callerSpaceId}` as `0x${string}`,
       daoSpaceId: `0x${spaceId}` as `0x${string}`,

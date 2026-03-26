@@ -181,7 +181,7 @@ async function main() {
   for (const t of tags)     { const x = existingTags.get(t.name.toLowerCase().trim()) ?? existingTopics.get(t.name.toLowerCase().trim()); if (x) tagIds[t.name] = x; }
   for (const o of orgs)     { const x = existingProjects.get(o.name.toLowerCase().trim());  if (x) orgIds[o.name]     = x; }
   for (const p of persons)  { const x = existingPersons.get(p.name.toLowerCase().trim());   if (x) personIds[p.name]  = x; }
-  const existingAnyVenue = await fetchExistingMaps([TYPES.project, TYPES.journal]);
+  const existingAnyVenue = await fetchExistingMaps([TYPES.event, TYPES.journal]);
   for (const v of venues)   { const x = existingAnyVenue.get(v.name.toLowerCase().trim());  if (x) venueIds[v.name]   = x; }
   for (const d of datasets) { const x = existingDatasets.get(d.name.toLowerCase().trim());  if (x) datasetIds[d.name] = x; }
 
@@ -208,7 +208,7 @@ async function main() {
     const values: any[] = [];
     if (venue.web_url) values.push({ property: PROPERTIES.web_url, type: "text", value: venue.web_url });
     if (venue.since)   values.push({ property: PROPERTIES.date_founded, type: "date", value: `${venue.since}-01-01` });
-    const { id, ops } = Graph.createEntity({ name: venue.name, description: desc, types: [TYPES.project], values });
+    const { id, ops } = Graph.createEntity({ name: venue.name, description: desc, types: [TYPES.event], values });
     venueIds[venue.name] = id; b1.push(...ops);
   }
   for (const venue of journalVenues) {
