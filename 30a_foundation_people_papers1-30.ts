@@ -15,7 +15,7 @@ import dotenv from "dotenv";
 import { Graph, type Op } from "@geoprotocol/geo-sdk";
 import {
   SPACE_ID, BOUNTY, DRY_RUN, PILOT_PAPER_ID, PILOT_PAPER_NAME,
-  load, fetchExistingMap, fetchExistingMaps, publishBatch, buildPaperLookups, buildPaperOps,
+  load, fetchExistingMap, fetchExistingMaps, publishBatch, buildPaperLookups, buildPaperOps, buildExistingPaperAugmentOps,
   normalizeEntityName, filterPapersForPilot,
   type TopicData, type TagData, type VenueData, type DatasetData,
   type OrgData, type PersonData, type PaperData,
@@ -25,6 +25,78 @@ import {
 import { TYPES, PROPERTIES } from "./src/constants";
 
 dotenv.config();
+
+function filterPilotDependencies(args: {
+  topics: TopicData[];
+  tags: TagData[];
+  venues: VenueData[];
+  datasets: DatasetData[];
+  orgs: OrgData[];
+  persons: PersonData[];
+  papers: PaperData[];
+  relPaperPerson: RelPaperPerson[];
+  relPaperVenue: RelPaperVenue[];
+  relPaperDataset: RelPaperDataset[];
+  relPaperTopic: RelPaperTopic[];
+  relPaperOrg: RelPaperOrg[];
+  relPaperTag: RelPaperTag[];
+}) {
+  const {
+    topics,
+    tags,
+    venues,
+    datasets,
+    orgs,
+    persons,
+    papers,
+    relPaperPerson,
+    relPaperVenue,
+    relPaperDataset,
+    relPaperTopic,
+    relPaperOrg,
+    relPaperTag,
+  } = args;
+
+  if (!PILOT_PAPER_ID && !PILOT_PAPER_NAME) {
+    return args;
+  }
+
+  const pilotPaperIds = new Set(papers.map((paper) => paper.id));
+  const neededPeople = new Set(
+    relPaperPerson.filter((row) => pilotPaperIds.has(row.paper_id)).map((row) => row.person_name),
+  );
+  const neededVenues = new Set(
+    relPaperVenue.filter((row) => pilotPaperIds.has(row.paper_id)).map((row) => row.venue_name),
+  );
+  const neededDatasets = new Set(
+    relPaperDataset.filter((row) => pilotPaperIds.has(row.paper_id)).map((row) => row.dataset_name),
+  );
+  const neededTopics = new Set(
+    relPaperTopic.filter((row) => pilotPaperIds.has(row.paper_id)).map((row) => row.topic_name),
+  );
+  const neededTags = new Set(
+    relPaperTag.filter((row) => pilotPaperIds.has(row.paper_id)).map((row) => row.tag_name),
+  );
+  const neededOrgs = new Set(
+    relPaperOrg.filter((row) => pilotPaperIds.has(row.paper_id)).map((row) => row.org_name),
+  );
+
+  return {
+    topics: topics.filter((topic) => neededTopics.has(topic.name)),
+    tags: tags.filter((tag) => neededTags.has(tag.name)),
+    venues: venues.filter((venue) => neededVenues.has(venue.name)),
+    datasets: datasets.filter((dataset) => neededDatasets.has(dataset.name)),
+    orgs: orgs.filter((org) => neededOrgs.has(org.name)),
+    persons: persons.filter((person) => neededPeople.has(person.name)),
+    papers,
+    relPaperPerson: relPaperPerson.filter((row) => pilotPaperIds.has(row.paper_id)),
+    relPaperVenue: relPaperVenue.filter((row) => pilotPaperIds.has(row.paper_id)),
+    relPaperDataset: relPaperDataset.filter((row) => pilotPaperIds.has(row.paper_id)),
+    relPaperTopic: relPaperTopic.filter((row) => pilotPaperIds.has(row.paper_id)),
+    relPaperOrg: relPaperOrg.filter((row) => pilotPaperIds.has(row.paper_id)),
+    relPaperTag: relPaperTag.filter((row) => pilotPaperIds.has(row.paper_id)),
+  };
+}
 
 async function main() {
   console.log("╔══════════════════════════════════════════════════════════════╗");
@@ -37,21 +109,51 @@ async function main() {
   }
 
   // ── Load data ──────────────────────────────────────────────────────────────
-  const topics      = load<TopicData>     ("topics.json");
-  const tags        = load<TagData>       ("tags.json");
+  let topics      = load<TopicData>     ("topics.json");
+  let tags        = load<TagData>       ("tags.json");
   const conferenceVenues = load<VenueData>("venues_conference.json");
   const journalVenues    = load<VenueData>("venues_journal.json");
-  const venues      = [...conferenceVenues, ...journalVenues];
-  const datasets    = load<DatasetData>   ("datasets.json");
-  const orgs        = load<OrgData>       ("organizations.json");
-  const persons     = load<PersonData>    ("persons.json");
-  const papers      = filterPapersForPilot(load<PaperData>("papers.json"));
-  const relPaperPerson  = load<RelPaperPerson> ("rel_paper_person.json");
-  const relPaperVenue   = load<RelPaperVenue>  ("rel_paper_venue.json");
-  const relPaperDataset = load<RelPaperDataset>("rel_paper_dataset.json");
-  const relPaperTopic   = load<RelPaperTopic>  ("rel_paper_topic.json");
-  const relPaperOrg     = load<RelPaperOrg>    ("rel_paper_org.json");
-  const relPaperTag     = load<RelPaperTag>    ("rel_paper_tag.json");
+  let venues      = [...conferenceVenues, ...journalVenues];
+  let datasets    = load<DatasetData>   ("datasets.json");
+  let orgs        = load<OrgData>       ("organizations.json");
+  let persons     = load<PersonData>    ("persons.json");
+  let papers      = filterPapersForPilot(load<PaperData>("papers.json"));
+  let relPaperPerson  = load<RelPaperPerson> ("rel_paper_person.json");
+  let relPaperVenue   = load<RelPaperVenue>  ("rel_paper_venue.json");
+  let relPaperDataset = load<RelPaperDataset>("rel_paper_dataset.json");
+  let relPaperTopic   = load<RelPaperTopic>  ("rel_paper_topic.json");
+  let relPaperOrg     = load<RelPaperOrg>    ("rel_paper_org.json");
+  let relPaperTag     = load<RelPaperTag>    ("rel_paper_tag.json");
+
+  ({
+    topics,
+    tags,
+    venues,
+    datasets,
+    orgs,
+    persons,
+    papers,
+    relPaperPerson,
+    relPaperVenue,
+    relPaperDataset,
+    relPaperTopic,
+    relPaperOrg,
+    relPaperTag,
+  } = filterPilotDependencies({
+    topics,
+    tags,
+    venues,
+    datasets,
+    orgs,
+    persons,
+    papers,
+    relPaperPerson,
+    relPaperVenue,
+    relPaperDataset,
+    relPaperTopic,
+    relPaperOrg,
+    relPaperTag,
+  }));
 
   // ── Fetch existing entities for deduplication ──────────────────────────────
   console.log("Fetching existing entities from AI space...");
@@ -173,6 +275,7 @@ async function main() {
     const existingPaperId = existingPapers.get(normalizeEntityName(paper.name));
     if (existingPaperId) {
       console.log(`  ⏭️  ${paper.name.slice(0, 60)} (already exists: ${existingPaperId})`);
+      b3.push(...await buildExistingPaperAugmentOps(existingPaperId, paper, lookups));
       continue;
     }
     console.log(`  📄 ${paper.name.slice(0, 60)}`);
@@ -189,6 +292,7 @@ async function main() {
     const existingPaperId = existingPapers.get(normalizeEntityName(paper.name));
     if (existingPaperId) {
       console.log(`  ⏭️  ${paper.name.slice(0, 60)} (already exists: ${existingPaperId})`);
+      b4.push(...await buildExistingPaperAugmentOps(existingPaperId, paper, lookups));
       continue;
     }
     console.log(`  📄 ${paper.name.slice(0, 60)}`);

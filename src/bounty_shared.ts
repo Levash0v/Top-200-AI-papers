@@ -128,6 +128,52 @@ export async function fetchExistingMaps(typeIds: string[]): Promise<Map<string, 
   return merged;
 }
 
+type ExistingPaperState = {
+  description: string | null;
+  propertyIds: Set<string>;
+  relationTargets: Map<string, Set<string>>;
+};
+
+export async function fetchExistingPaperState(entityId: string): Promise<ExistingPaperState> {
+  const data = await gql(
+    `query($id: UUID!) {
+      entity(id: $id) {
+        id
+        description
+      }
+      values(filter: { entityId: { is: $id } }, first: 500) {
+        propertyId
+      }
+      relations(filter: { fromEntityId: { is: $id } }, first: 500) {
+        typeId
+        toEntity {
+          id
+        }
+      }
+    }`,
+    { id: entityId },
+  );
+
+  const propertyIds = new Set<string>(
+    (data?.values ?? []).map((value: any) => value?.propertyId).filter(Boolean),
+  );
+  const relationTargets = new Map<string, Set<string>>();
+
+  for (const rel of data?.relations ?? []) {
+    const typeId = rel?.typeId;
+    const toEntityId = rel?.toEntity?.id;
+    if (!typeId || !toEntityId) continue;
+    if (!relationTargets.has(typeId)) relationTargets.set(typeId, new Set<string>());
+    relationTargets.get(typeId)!.add(toEntityId);
+  }
+
+  return {
+    description: data?.entity?.description ?? null,
+    propertyIds,
+    relationTargets,
+  };
+}
+
 // ─── Image upload ─────────────────────────────────────────────────────────────
 
 function resolveImage(local: string | undefined): string | null {
@@ -266,6 +312,28 @@ export function buildPaperLookups(
   return { paperAuthors, paperVenueId, paperDatasets, paperTopics, paperTags, paperOrgs, venueIds };
 }
 
+function buildPaperScalarValues(paper: PaperData) {
+  const values: any[] = [];
+  if (paper.web_url) values.push({ property: SPACE_PROPS.web_url, type: "text", value: paper.web_url });
+  if (paper.publication_date) values.push({ property: SPACE_PROPS.publication_date, type: "date", value: paper.publication_date });
+  if (paper.arxiv_url) values.push({ property: SPACE_PROPS.arxiv_url, type: "text", value: paper.arxiv_url });
+  if (paper.code_url) values.push({ property: SPACE_PROPS.code_url, type: "text", value: paper.code_url });
+  if (paper.semantic_scholar_url) {
+    values.push({ property: SPACE_PROPS.semantic_scholar_url, type: "text", value: paper.semantic_scholar_url });
+  }
+  if (paper.key_contribution) {
+    values.push({ property: SPACE_PROPS.key_contribution, type: "text", value: paper.key_contribution });
+  }
+  if (typeof paper.citation_count === "number") {
+    values.push({ property: SPACE_PROPS.citation_count, type: "integer", value: paper.citation_count });
+  }
+  return values;
+}
+
+function hasNonEmptyText(value: string | null | undefined): boolean {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 // ─── Build ops for one paper ──────────────────────────────────────────────────
 
 export async function buildPaperOps(
@@ -283,20 +351,7 @@ export async function buildPaperOps(
   const tagRels = (paperTags[pid] ?? []).map((toEntity) => ({ toEntity }));
 
   // Values
-  const values: any[] = [];
-  if (paper.web_url)      values.push({ property: SPACE_PROPS.web_url,          type: "text", value: paper.web_url });
-  if (paper.publication_date) values.push({ property: SPACE_PROPS.publication_date, type: "date", value: paper.publication_date });
-  if (paper.arxiv_url)    values.push({ property: SPACE_PROPS.arxiv_url,        type: "text", value: paper.arxiv_url });
-  if (paper.code_url)     values.push({ property: SPACE_PROPS.code_url,         type: "text", value: paper.code_url });
-  if (paper.semantic_scholar_url) {
-    values.push({ property: SPACE_PROPS.semantic_scholar_url, type: "text", value: paper.semantic_scholar_url });
-  }
-  if (paper.key_contribution) {
-    values.push({ property: SPACE_PROPS.key_contribution, type: "text", value: paper.key_contribution });
-  }
-  if (typeof paper.citation_count === "number") {
-    values.push({ property: SPACE_PROPS.citation_count, type: "integer", value: paper.citation_count });
-  }
+  const values = buildPaperScalarValues(paper);
 
   const rels: Record<string, any> = {};
   if (topicRels.length) rels[SPACE_PROPS.related_topics] = topicRels;
@@ -400,6 +455,67 @@ export async function buildPaperOps(
       }).ops);
     }
     addCollectionBlock(ops, geoId, "Institutions", orgEntities, VIEWS.list, lastPos);
+  }
+
+  return ops;
+}
+
+export async function buildExistingPaperAugmentOps(
+  existingPaperId: string,
+  paper: PaperData,
+  lookups: ReturnType<typeof buildPaperLookups>,
+): Promise<Op[]> {
+  const ops: Op[] = [];
+  const pid = paper.id;
+  const { paperAuthors, paperVenueId, paperTopics, paperTags, paperOrgs, venueIds } = lookups;
+  const existing = await fetchExistingPaperState(existingPaperId);
+
+  const missingValues = buildPaperScalarValues(paper).filter(
+    (value) => !existing.propertyIds.has(value.property),
+  );
+  const shouldSetDescription = hasNonEmptyText(paper.description) && !hasNonEmptyText(existing.description);
+
+  if (shouldSetDescription || missingValues.length > 0) {
+    const { ops: updateOps } = Graph.updateEntity({
+      id: existingPaperId,
+      description: shouldSetDescription ? paper.description ?? undefined : undefined,
+      values: missingValues,
+    });
+    ops.push(...updateOps);
+  }
+
+  const ensureRelation = (relationType: string, toEntity: string | null | undefined) => {
+    if (!toEntity) return;
+    const existingTargets = existing.relationTargets.get(relationType);
+    if (existingTargets?.has(toEntity)) return;
+    ops.push(
+      ...Graph.createRelation({
+        fromEntity: existingPaperId,
+        toEntity,
+        type: relationType,
+      }).ops,
+    );
+  };
+
+  for (const author of paperAuthors[pid] ?? []) {
+    ensureRelation(SPACE_PROPS.authors, author.geoId);
+  }
+
+  ensureRelation(SPACE_PROPS.published_in, paperVenueId[pid]);
+
+  const peerReviewedByGeoId = paper.peer_reviewed_by ? venueIds[paper.peer_reviewed_by] : undefined;
+  ensureRelation(SPACE_PROPS.peer_reviewed_by, peerReviewedByGeoId);
+
+  for (const topic of paperTopics[pid] ?? []) {
+    ensureRelation(SPACE_PROPS.related_topics, topic.geoId);
+  }
+
+  for (const tagId of paperTags[pid] ?? []) {
+    ensureRelation(SPACE_PROPS.tags, tagId);
+  }
+
+  for (const orgId of paperOrgs[pid] ?? []) {
+    ensureRelation(SPACE_PROPS.related_projects, orgId);
   }
 
   return ops;
