@@ -296,3 +296,69 @@ What is still blocked externally:
    - run one true pilot publish
    - inspect the resulting paper entity
    - use that as the canonical review case before scaling
+
+## 13. Curatorial policy update — org-like entities
+
+Current curator decision for org-like entities:
+
+- if the same entity already exists in the AI space, prefer reuse over create
+- do not automatically collapse nearby brand-family entities into one canonical parent
+
+This means names such as:
+
+- `Google Brain`
+- `Google DeepMind`
+- `Google Research`
+
+should be treated as separate entities unless there is an explicit decision to merge them.
+
+Reason:
+
+- they are related historically, but they are not the same label
+- automatic collapse would hide meaning and make paper-to-org attribution less precise
+- for this project, curator control is preferred over aggressive automatic normalization
+
+Operational implication:
+
+- reuse should apply when the matching entity itself already exists
+- reuse should not be interpreted as permission to map neighboring entities to one another just because they belong to the same company family
+
+Examples:
+
+- reuse `Google Brain` if `Google Brain` already exists
+- do not automatically map `Google DeepMind` to `Google Brain`
+- do not automatically map `Google Research` to `Google Brain`
+
+Next open implementation question:
+
+- organization reuse should likely become name-first and AI-space-aware, instead of relying only on the current expected type bucket such as `Project`
+
+## 14. Venue normalization rule — hybrid and historical cases
+
+Current venue normalization rule:
+
+- do not automatically reinterpret a journal as an event just because its title contains words like `Proceedings`
+- normalize hybrid strings only when the paper context clearly mixes two different publication layers
+
+Applied example:
+
+- `ACM Transactions on Graphics (SIGGRAPH)` was split into:
+  - `Journal` -> `ACM Transactions on Graphics`
+  - `Conference/Event` -> `SIGGRAPH 2023`
+
+Reason:
+
+- this separates journal publication from conference event context without contradiction
+- it aligns with the current ontology direction:
+  - `conference -> Event`
+  - `journal -> Journal`
+
+Counter-example:
+
+- names such as `Proceedings of the Royal Society (London)` should not be auto-split or auto-reclassified only because `Proceedings` appears in the title
+- historical journal-style titles require paper-level citation context before any normalization decision
+
+Operational implication:
+
+- hybrid venue cleanup should stay case-by-case
+- no broad regex-based rewrite of `Proceedings`, `Transactions`, or similar journal title patterns should be applied without paper-specific evidence

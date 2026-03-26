@@ -14,6 +14,7 @@ export const TYPES = {
   property:   "808a04ceb21c4d888ad12e240613e5ca",  // Property — meta-type for property definitions
   person:     "7ed45f2bc48b419e8e4664d5ff680b0d",
   project:    "484a18c5030a499cb0f2ef588ff16d50",
+  event:      "4d876b81787e41fcab5d075d4da66a3f",
   dataset:    "0c4babfb43893486af827341bbf32e09",  // Dataset — AI-space dataset type
   topic:      "5ef5a5860f274d8e8f6c59ae5b3e89e2",
   // Keep env override support, but default to the confirmed AI-space ontology IDs.

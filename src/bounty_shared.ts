@@ -250,6 +250,10 @@ export async function publishBatch(ops: Op[], label: string): Promise<void> {
   const filename = `bounty_${label.replace(/[^a-z0-9]/gi, "_")}.txt`;
   printOps(ops, "data_to_delete", filename);
   console.log(`\n★ [${label}]: ${ops.length} ops`);
+  if (ops.length === 0) {
+    console.log("  (skip empty batch)");
+    return;
+  }
   if (DRY_RUN) { console.log("  (dry run)"); return; }
   const tx = await publishOps(ops, label);
   console.log(`✅ tx: ${tx}`);

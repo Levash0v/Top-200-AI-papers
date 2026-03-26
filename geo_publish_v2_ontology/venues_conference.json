@@ -1,0 +1,101 @@
+[
+  {
+    "id": "venue_acm_conference_on_fairnes",
+    "name": "ACM Conference on Fairness, Accountability, and Transparency (FAccT)",
+    "short_name": "FAccT",
+    "type": "Conference",
+    "description": "Interdisciplinary venue on fairness, accountability, and transparency in socio-technical systems.",
+    "since": 2018,
+    "web_url": "https://facctconference.org"
+  },
+  {
+    "id": "venue_siggraph_2023",
+    "name": "SIGGRAPH 2023",
+    "short_name": "SIGGRAPH 2023",
+    "type": "Conference",
+    "description": "Annual SIGGRAPH conference on computer graphics and interactive techniques.",
+    "since": 2023,
+    "web_url": null
+  },
+  {
+    "id": "venue_advances_in_neural_inform",
+    "name": "NeurIPS",
+    "short_name": "NeurIPS",
+    "type": "Conference",
+    "description": "Premier annual ML/AI conference covering all areas of neural information processing.",
+    "since": 1987,
+    "web_url": "https://neurips.cc"
+  },
+  {
+    "id": "venue_annual_meeting_of_the_ass",
+    "name": "ACL",
+    "short_name": "ACL",
+    "type": "Conference",
+    "description": "Premier venue for computational linguistics and natural language processing research.",
+    "since": 1963,
+    "web_url": "https://aclanthology.org"
+  },
+  {
+    "id": "venue_empirical_methods_in_natu",
+    "name": "EMNLP",
+    "short_name": "EMNLP",
+    "type": "Conference",
+    "description": "Top conference on empirical methods in NLP and computational linguistics.",
+    "since": 1996,
+    "web_url": "https://aclanthology.org"
+  },
+  {
+    "id": "venue_european_conference_on_co",
+    "name": "ECCV",
+    "short_name": "ECCV",
+    "type": "Conference",
+    "description": "Major biennial European conference on computer vision.",
+    "since": 1990,
+    "web_url": "https://eccv.ecva.net"
+  },
+  {
+    "id": "venue_ieee_conference_on_comput",
+    "name": "CVPR",
+    "short_name": "CVPR",
+    "type": "Conference",
+    "description": "Leading conference for computer vision and pattern recognition research.",
+    "since": 1983,
+    "web_url": "https://cvpr.thecvf.com"
+  },
+  {
+    "id": "venue_international_conference_",
+    "name": "ICCV",
+    "short_name": "ICCV",
+    "type": "Conference",
+    "description": "Top biennial IEEE conference on computer vision.",
+    "since": 1987,
+    "web_url": "https://iccv.thecvf.com"
+  },
+  {
+    "id": "venue_international_conference_",
+    "name": "ICLR",
+    "short_name": "ICLR",
+    "type": "Conference",
+    "description": "Premier venue for deep learning and representation learning research.",
+    "since": 2013,
+    "web_url": "https://iclr.cc"
+  },
+  {
+    "id": "venue_international_conference_",
+    "name": "ICML",
+    "short_name": "ICML",
+    "type": "Conference",
+    "description": "Top annual conference on all aspects of machine learning research.",
+    "since": 1980,
+    "web_url": "https://icml.cc"
+  },
+  {
+    "id": "venue_north_american_chapter_of",
+    "name": "NAACL",
+    "short_name": "NAACL",
+    "type": "Conference",
+    "description": "Regional ACL conference covering computational linguistics and NLP.",
+    "since": 2000,
+    "web_url": "https://naacl.org"
+  }
+]

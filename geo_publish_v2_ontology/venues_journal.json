@@ -1,0 +1,119 @@
+[
+  {
+    "id": "venue_biometrika",
+    "name": "Biometrika",
+    "short_name": "Biometrika",
+    "type": "Journal",
+    "description": "Peer-reviewed statistical journal; published foundational PCA work.",
+    "since": 1901,
+    "web_url": "https://academic.oup.com/biomet"
+  },
+  {
+    "id": "venue_bulletin_of_mathematical_",
+    "name": "Bulletin of Mathematical Biophysics",
+    "short_name": "Bull. Math. Biophys.",
+    "type": "Journal",
+    "description": "Historical journal publishing foundational work on mathematical models in biology.",
+    "since": 1939,
+    "web_url": null
+  },
+  {
+    "id": "venue_ieee_transactions_on_patt",
+    "name": "TPAMI",
+    "short_name": "TPAMI",
+    "type": "Journal",
+    "description": "Top IEEE journal for pattern analysis, machine intelligence, and computer vision.",
+    "since": 1979,
+    "web_url": "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=34"
+  },
+  {
+    "id": "venue_journal_of_machine_learni",
+    "name": "JMLR",
+    "short_name": "JMLR",
+    "type": "Journal",
+    "description": "Open-access peer-reviewed journal for all areas of machine learning.",
+    "since": 2000,
+    "web_url": "https://jmlr.org"
+  },
+  {
+    "id": "venue_machine_learning",
+    "name": "Machine Learning",
+    "short_name": "MLJ",
+    "type": "Journal",
+    "description": "Peer-reviewed journal covering all aspects of machine learning theory and application.",
+    "since": 1986,
+    "web_url": "https://link.springer.com/journal/10994"
+  },
+  {
+    "id": "venue_acm_transactions_on_graphics",
+    "name": "ACM Transactions on Graphics",
+    "short_name": "TOG",
+    "type": "Journal",
+    "description": "Premier journal for computer graphics and interactive techniques.",
+    "since": 1982,
+    "web_url": "https://dl.acm.org/journal/tog"
+  },
+  {
+    "id": "venue_mind",
+    "name": "Mind",
+    "short_name": "Mind",
+    "type": "Journal",
+    "description": "Peer-reviewed philosophy journal; published Turing's Computing Machinery and Intelligence.",
+    "since": 1876,
+    "web_url": "https://academic.oup.com/mind"
+  },
+  {
+    "id": "venue_nature",
+    "name": "Nature",
+    "short_name": "Nature",
+    "type": "Journal",
+    "description": "Multidisciplinary scientific journal publishing landmark research across all sciences.",
+    "since": 1869,
+    "web_url": "https://www.nature.com"
+  },
+  {
+    "id": "venue_neural_computation",
+    "name": "Neural Computation",
+    "short_name": "Neural Comput.",
+    "type": "Journal",
+    "description": "Journal bridging computational neuroscience and neural network research.",
+    "since": 1989,
+    "web_url": "https://direct.mit.edu/neco"
+  },
+  {
+    "id": "venue_proceedings_of_the_nation",
+    "name": "PNAS",
+    "short_name": "PNAS",
+    "type": "Journal",
+    "description": "Multidisciplinary US journal publishing high-impact scientific research.",
+    "since": 1914,
+    "web_url": "https://www.pnas.org"
+  },
+  {
+    "id": "venue_proceedings_of_the_royal_",
+    "name": "Proceedings of the Royal Society (London)",
+    "short_name": "Proc. Royal Soc.",
+    "type": "Journal",
+    "description": "Historic multidisciplinary scientific journal of the Royal Society.",
+    "since": 1831,
+    "web_url": "https://royalsocietypublishing.org"
+  },
+  {
+    "id": "venue_science",
+    "name": "Science",
+    "short_name": "Science",
+    "type": "Journal",
+    "description": "Peer-reviewed journal of the American Association for the Advancement of Science.",
+    "since": 1880,
+    "web_url": "https://www.science.org"
+  },
+  {
+    "id": "venue_the_annals_of_mathematica",
+    "name": "The Annals of Mathematical Statistics",
+    "short_name": "Ann. Math. Stat.",
+    "type": "Journal",
+    "description": "Historical statistics journal; predecessor to Annals of Statistics.",
+    "since": 1930,
+    "web_url": null
+  }
+]
