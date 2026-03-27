@@ -1,5 +1,13 @@
 [
   {
+    "paper_id": "W4238730433",
+    "paper_name": "On Computable Numbers, with an Application to the Entscheidungsproblem",
+    "venue_name": "Proceedings of the London Mathematical Society",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1936"
+  },
+  {
     "paper_id": "paper_a_logical_calculus_o",
     "paper_name": "A Logical Calculus of Ideas Immanent in Nervous Activity",
     "venue_name": "Bulletin of Mathematical Biophysics",
@@ -8,12 +16,124 @@
     "year": "1943"
   },
   {
+    "paper_id": "W56793145",
+    "paper_name": "A Mathematical Theory of Communication",
+    "venue_name": "Bell System Technical Journal",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1948"
+  },
+  {
+    "paper_id": "W1485161910",
+    "paper_name": "Computing Machinery and Intelligence",
+    "venue_name": "Journal of Symbolic Logic",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1950"
+  },
+  {
+    "paper_id": "W3009571886",
+    "paper_name": "Programs with Common Sense",
+    "venue_name": "Mechanization of Thought Processes, Vol. I",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "1959"
+  },
+  {
+    "paper_id": "W3198350258",
+    "paper_name": "Some Studies in Machine Learning Using the Game of Checkers",
+    "venue_name": "IBM Journal of Research and Development",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1959"
+  },
+  {
+    "paper_id": "W4413731484",
+    "paper_name": "Steps Toward Artificial Intelligence",
+    "venue_name": "Proceedings of the IRE",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1961"
+  },
+  {
+    "paper_id": "paper_information-theoreti",
+    "paper_name": "Information-Theoretic Limitations of Formal Systems",
+    "venue_name": "Journal of the ACM",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1966"
+  },
+  {
+    "paper_id": "W1969483458",
+    "paper_name": "A formal basis for the heuristic determination of minimum cost paths",
+    "venue_name": "IEEE Transactions on Systems Science and Cybernetics",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1968"
+  },
+  {
+    "paper_id": "W2484236325",
+    "paper_name": "Maximum Likelihood from Incomplete Data via the EM Algorithm",
+    "venue_name": "Journal of the Royal Statistical Society Series B",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1977"
+  },
+  {
+    "paper_id": "paper_the_em_algorithm",
+    "paper_name": "The EM Algorithm",
+    "venue_name": "Journal of the Royal Statistical Society Series B",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1977"
+  },
+  {
+    "paper_id": "paper_minimum_description_",
+    "paper_name": "Minimum Description Length Principle",
+    "venue_name": "IEEE Transactions on Information Theory",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1978"
+  },
+  {
     "paper_id": "W1498436455",
     "paper_name": "Learning Representations by Back-propagating Errors",
     "venue_name": "Nature",
     "venue_class": "Journal",
     "relation": "PUBLISHED_IN",
     "year": "1986"
+  },
+  {
+    "paper_id": "W2125838338",
+    "paper_name": "A tutorial on hidden Markov models and selected applications in speech recognition",
+    "venue_name": "Proceedings of the IEEE",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1989"
+  },
+  {
+    "paper_id": "paper_scale-space_and_edge",
+    "paper_name": "Scale-Space and Edge Detection Using Anisotropic Diffusion",
+    "venue_name": "TPAMI",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1990"
+  },
+  {
+    "paper_id": "paper_vc_dimension_and_com",
+    "paper_name": "VC Dimension and Computational Complexity",
+    "venue_name": "COLT",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "1991"
+  },
+  {
+    "paper_id": "paper_a_training_algorithm",
+    "paper_name": "A Training Algorithm for Optimal Margin Classifiers",
+    "venue_name": "COLT",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "1992"
   },
   {
     "paper_id": "W32403112",
@@ -40,6 +160,14 @@
     "year": "1996"
   },
   {
+    "paper_id": "W1988790447",
+    "paper_name": "A decision-theoretic generalization of on-line learning and an application to boosting",
+    "venue_name": "Journal of Computer and System Sciences",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1997"
+  },
+  {
     "paper_id": "W2064675550",
     "paper_name": "Long Short-Term Memory",
     "venue_name": "Neural Computation",
@@ -48,12 +176,36 @@
     "year": "1997"
   },
   {
+    "paper_id": "W2112796928",
+    "paper_name": "Gradient-based learning applied to document recognition",
+    "venue_name": "Proceedings of the IEEE",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "1998"
+  },
+  {
     "paper_id": "W1516111018",
     "paper_name": "An introduction to variational methods for graphical models",
     "venue_name": "Machine Learning",
     "venue_class": "Journal",
     "relation": "PUBLISHED_IN",
     "year": "1999"
+  },
+  {
+    "paper_id": "paper_opencv:_an_open-sour",
+    "paper_name": "OpenCV: An Open-Source Computer Vision Library",
+    "venue_name": "CVPR Workshops",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2000"
+  },
+  {
+    "paper_id": "W2158823144",
+    "paper_name": "Conditional Random Fields: Probabilistic Models for Segmenting and Labeling Sequence Data",
+    "venue_name": "ICML",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2001"
   },
   {
     "paper_id": "W2911964244",
@@ -67,14 +219,6 @@
     "paper_id": "W2164598857",
     "paper_name": "Rapid Object Detection using a Boosted Cascade of Simple Features (Viola-Jones)",
     "venue_name": "CVPR",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2001"
-  },
-  {
-    "paper_id": "W2158823144",
-    "paper_name": "Conditional Random Fields: Probabilistic Models for Segmenting and Labeling Sequence Data",
-    "venue_name": "ICML",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2001"
@@ -96,6 +240,30 @@
     "year": "2002"
   },
   {
+    "paper_id": "W2272770742",
+    "paper_name": "Latent Dirichlet Allocation",
+    "venue_name": "JMLR",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2003"
+  },
+  {
+    "paper_id": "W2144220038",
+    "paper_name": "Distinctive Image Features from Scale-Invariant Keypoints (SIFT)",
+    "venue_name": "IJCV",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2004"
+  },
+  {
+    "paper_id": "paper_sift:_distinctive_im",
+    "paper_name": "SIFT: Distinctive Image Features from Scale-Invariant Keypoints",
+    "venue_name": "IJCV",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2004"
+  },
+  {
     "paper_id": "paper_hog:_histograms_of_o",
     "paper_name": "HOG: Histograms of Oriented Gradients",
     "venue_name": "CVPR",
@@ -112,12 +280,44 @@
     "year": "2005"
   },
   {
+    "paper_id": "paper_regularization_and_v",
+    "paper_name": "Regularization and Variable Selection via the Elastic Net",
+    "venue_name": "Journal of the Royal Statistical Society Series B",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2005"
+  },
+  {
+    "paper_id": "paper_stacked_autoencoders",
+    "paper_name": "Stacked Autoencoders",
+    "venue_name": "JMLR",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2007"
+  },
+  {
+    "paper_id": "paper_t-sne:_visualizing_h",
+    "paper_name": "t-SNE: Visualizing High-Dimensional Data",
+    "venue_name": "JMLR",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2008"
+  },
+  {
     "paper_id": "W2108598243",
     "paper_name": "ImageNet: A Large-Scale Hierarchical Image Database",
     "venue_name": "CVPR",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2009"
+  },
+  {
+    "paper_id": "paper_object_detection_wit",
+    "paper_name": "Object Detection with Discriminatively Trained Part-Based Models",
+    "venue_name": "TPAMI",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2010"
   },
   {
     "paper_id": "W2896050579",
@@ -128,20 +328,28 @@
     "year": "2010"
   },
   {
+    "paper_id": "W2892010572",
+    "paper_name": "Understanding the difficulty of training deep feedforward neural networks (Xavier init)",
+    "venue_name": "AISTATS",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2010"
+  },
+  {
+    "paper_id": "1101.3618",
+    "paper_name": "Adaptive Subgradient Methods for Online Learning",
+    "venue_name": "JMLR",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2011"
+  },
+  {
     "paper_id": "paper_imagenet_classificat",
     "paper_name": "ImageNet Classification with Deep CNNs (AlexNet)",
     "venue_name": "NeurIPS",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2012"
-  },
-  {
-    "paper_id": "1301.3781",
-    "paper_name": "Efficient Estimation of Word Representations in Vector Space (Word2Vec)",
-    "venue_name": "ICLR",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2013"
   },
   {
     "paper_id": "1312.6114",
@@ -152,9 +360,33 @@
     "year": "2013"
   },
   {
+    "paper_id": "1301.3781",
+    "paper_name": "Efficient Estimation of Word Representations in Vector Space (Word2Vec)",
+    "venue_name": "ICLR",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2013"
+  },
+  {
+    "paper_id": "1408.5882",
+    "paper_name": "Convolutional Neural Networks for Sentence Classification",
+    "venue_name": "EMNLP",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2014"
+  },
+  {
     "paper_id": "1406.2661",
     "paper_name": "Generative Adversarial Nets",
     "venue_name": "NeurIPS",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2014"
+  },
+  {
+    "paper_id": "W2250539671",
+    "paper_name": "GloVe: Global Vectors for Word Representation",
+    "venue_name": "EMNLP",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2014"
@@ -168,17 +400,25 @@
     "year": "2014"
   },
   {
-    "paper_id": "1409.1556",
-    "paper_name": "Very Deep Convolutional Networks for Large-Scale Image Recognition (VGGNet)",
-    "venue_name": "ICLR",
+    "paper_id": "1502.03167",
+    "paper_name": "Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift",
+    "venue_name": "ICML",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2015"
   },
   {
-    "paper_id": "1502.03167",
-    "paper_name": "Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift",
-    "venue_name": "ICML",
+    "paper_id": "W1677182931",
+    "paper_name": "Delving Deep into Rectifiers (He init)",
+    "venue_name": "ICCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2015"
+  },
+  {
+    "paper_id": "W1902237438",
+    "paper_name": "Effective Approaches to Attention-based Neural Machine Translation (Luong attention)",
+    "venue_name": "EMNLP",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2015"
@@ -208,6 +448,30 @@
     "year": "2015"
   },
   {
+    "paper_id": "1505.04597",
+    "paper_name": "U-Net: Convolutional Networks for Biomedical Image Segmentation",
+    "venue_name": "MICCAI",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2015"
+  },
+  {
+    "paper_id": "1409.1556",
+    "paper_name": "Very Deep Convolutional Networks for Large-Scale Image Recognition (VGGNet)",
+    "venue_name": "ICLR",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2015"
+  },
+  {
+    "paper_id": "1508.07909",
+    "paper_name": "Byte Pair Encoding for Neural Machine Translation",
+    "venue_name": "ACL",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2016"
+  },
+  {
     "paper_id": "1512.03385",
     "paper_name": "Deep Residual Learning for Image Recognition",
     "venue_name": "CVPR",
@@ -216,25 +480,9 @@
     "year": "2016"
   },
   {
-    "paper_id": "1512.02325",
-    "paper_name": "SSD: Single Shot MultiBox Detector",
-    "venue_name": "ECCV",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2016"
-  },
-  {
-    "paper_id": "1506.0264",
-    "paper_name": "You Only Look Once: Unified, Real-Time Object Detection (YOLO)",
-    "venue_name": "CVPR",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2016"
-  },
-  {
-    "paper_id": "1508.07909",
-    "paper_name": "Byte Pair Encoding for Neural Machine Translation",
-    "venue_name": "ACL",
+    "paper_id": "1602.04938",
+    "paper_name": "LIME: Why Should I Trust You?",
+    "venue_name": "KDD",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2016"
@@ -248,6 +496,38 @@
     "year": "2016"
   },
   {
+    "paper_id": "1606.0525",
+    "paper_name": "SQuAD: 100,000+ Questions for Machine Comprehension",
+    "venue_name": "EMNLP",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2016"
+  },
+  {
+    "paper_id": "1512.02325",
+    "paper_name": "SSD: Single Shot MultiBox Detector",
+    "venue_name": "ECCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2016"
+  },
+  {
+    "paper_id": "1603.02754",
+    "paper_name": "XGBoost: A Scalable Tree Boosting System",
+    "venue_name": "KDD",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2016"
+  },
+  {
+    "paper_id": "1506.0264",
+    "paper_name": "You Only Look Once: Unified, Real-Time Object Detection (YOLO)",
+    "venue_name": "CVPR",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2016"
+  },
+  {
     "paper_id": "1706.03762",
     "paper_name": "Attention Is All You Need",
     "venue_name": "NeurIPS",
@@ -256,9 +536,17 @@
     "year": "2017"
   },
   {
-    "paper_id": "1609.02907",
-    "paper_name": "Semi-Supervised Classification with Graph Convolutional Networks",
-    "venue_name": "ICLR",
+    "paper_id": "1703.10593",
+    "paper_name": "CycleGAN: Unpaired Image-to-Image Translation",
+    "venue_name": "ICCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2017"
+  },
+  {
+    "paper_id": "W4405367806",
+    "paper_name": "Deep reinforcement learning from human preferences",
+    "venue_name": "NeurIPS",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2017"
@@ -266,6 +554,38 @@
   {
     "paper_id": "1612.03144",
     "paper_name": "Feature Pyramid Networks for Object Detection",
+    "venue_name": "CVPR",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2017"
+  },
+  {
+    "paper_id": "W4385779512",
+    "paper_name": "LightGBM: A Highly Efficient Gradient Boosting Decision Tree",
+    "venue_name": "NeurIPS",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2017"
+  },
+  {
+    "paper_id": "1703.0687",
+    "paper_name": "Mask R-CNN",
+    "venue_name": "ICCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2017"
+  },
+  {
+    "paper_id": "W2894467456",
+    "paper_name": "Mastering the game of Go without human knowledge (AlphaGo Zero)",
+    "venue_name": "Nature",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2017"
+  },
+  {
+    "paper_id": "1611.07004",
+    "paper_name": "Pix2Pix: Image-to-Image Translation with cGANs",
     "venue_name": "CVPR",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
@@ -280,9 +600,25 @@
     "year": "2017"
   },
   {
-    "paper_id": "1611.07004",
-    "paper_name": "Pix2Pix: Image-to-Image Translation with cGANs",
-    "venue_name": "CVPR",
+    "paper_id": "1708.02002",
+    "paper_name": "RetinaNet: Focal Loss for Dense Object Detection",
+    "venue_name": "ICCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2017"
+  },
+  {
+    "paper_id": "1511.00561",
+    "paper_name": "SegNet: A Deep Convolutional Encoder-Decoder Architecture",
+    "venue_name": "TPAMI",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2017"
+  },
+  {
+    "paper_id": "1609.02907",
+    "paper_name": "Semi-Supervised Classification with Graph Convolutional Networks",
+    "venue_name": "ICLR",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2017"
@@ -296,49 +632,9 @@
     "year": "2017"
   },
   {
-    "paper_id": "W4385779512",
-    "paper_name": "LightGBM: A Highly Efficient Gradient Boosting Decision Tree",
-    "venue_name": "NeurIPS",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2017"
-  },
-  {
-    "paper_id": "W2894467456",
-    "paper_name": "Mastering the game of Go without human knowledge (AlphaGo Zero)",
-    "venue_name": "Nature",
-    "venue_class": "Journal",
-    "relation": "PUBLISHED_IN",
-    "year": "2017"
-  },
-  {
-    "paper_id": "W4405367806",
-    "paper_name": "Deep reinforcement learning from human preferences",
-    "venue_name": "NeurIPS",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2017"
-  },
-  {
-    "paper_id": "1709.01507",
-    "paper_name": "Squeeze-and-Excitation Networks",
-    "venue_name": "CVPR",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2018"
-  },
-  {
-    "paper_id": "1802.02611",
-    "paper_name": "DeepLab v3+: Encoder-Decoder with Atrous Separable Convolution",
-    "venue_name": "ECCV",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2018"
-  },
-  {
-    "paper_id": "1801.0129",
-    "paper_name": "Soft Actor-Critic: Off-Policy Maximum Entropy RL",
-    "venue_name": "ICML",
+    "paper_id": "1809.11096",
+    "paper_name": "BigGAN: Large Scale GAN Training",
+    "venue_name": "ICLR",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2018"
@@ -352,8 +648,32 @@
     "year": "2018"
   },
   {
-    "paper_id": "1809.11096",
-    "paper_name": "BigGAN: Large Scale GAN Training",
+    "paper_id": "W4415419551",
+    "paper_name": "CatBoost: Unbiased Boosting with Categorical Features",
+    "venue_name": "NeurIPS",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2018"
+  },
+  {
+    "paper_id": "1802.02611",
+    "paper_name": "DeepLab v3+: Encoder-Decoder with Atrous Separable Convolution",
+    "venue_name": "ECCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2018"
+  },
+  {
+    "paper_id": "1802.05365",
+    "paper_name": "ELMo: Deep contextualized word representations",
+    "venue_name": "NAACL",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2018"
+  },
+  {
+    "paper_id": "1804.07461",
+    "paper_name": "GLUE: General Language Understanding Evaluation",
     "venue_name": "ICLR",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
@@ -368,40 +688,24 @@
     "year": "2018"
   },
   {
-    "paper_id": "1804.07461",
-    "paper_name": "GLUE: General Language Understanding Evaluation",
-    "venue_name": "ICLR",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2018"
-  },
-  {
-    "paper_id": "W4415419551",
-    "paper_name": "CatBoost: Unbiased Boosting with Categorical Features",
-    "venue_name": "NeurIPS",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2018"
-  },
-  {
-    "paper_id": "1905.11946",
-    "paper_name": "EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks",
+    "paper_id": "1801.0129",
+    "paper_name": "Soft Actor-Critic: Off-Policy Maximum Entropy RL",
     "venue_name": "ICML",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
-    "year": "2019"
+    "year": "2018"
+  },
+  {
+    "paper_id": "1709.01507",
+    "paper_name": "Squeeze-and-Excitation Networks",
+    "venue_name": "CVPR",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2018"
   },
   {
     "paper_id": "1812.04948",
     "paper_name": "A Style-Based Generator Architecture for Generative Adversarial Networks (StyleGAN)",
-    "venue_name": "CVPR",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2019"
-  },
-  {
-    "paper_id": "1902.09212",
-    "paper_name": "HRNet: Deep High-Resolution Representation Learning",
     "venue_name": "CVPR",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
@@ -416,16 +720,40 @@
     "year": "2019"
   },
   {
-    "paper_id": "1810.00826",
-    "paper_name": "How Powerful are Graph Neural Networks?",
-    "venue_name": "ICLR",
+    "paper_id": "1810.04805",
+    "paper_name": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+    "venue_name": "NAACL",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2019"
   },
   {
-    "paper_id": "W4404667199",
-    "paper_name": "The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks",
+    "paper_id": "1905.11946",
+    "paper_name": "EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks",
+    "venue_name": "ICML",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2019"
+  },
+  {
+    "paper_id": "1904.01355",
+    "paper_name": "FCOS: Fully Convolutional One-Stage Object Detection",
+    "venue_name": "ICCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2019"
+  },
+  {
+    "paper_id": "1902.09212",
+    "paper_name": "HRNet: Deep High-Resolution Representation Learning",
+    "venue_name": "CVPR",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2019"
+  },
+  {
+    "paper_id": "1810.00826",
+    "paper_name": "How Powerful are Graph Neural Networks?",
     "venue_name": "ICLR",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
@@ -440,9 +768,41 @@
     "year": "2019"
   },
   {
-    "paper_id": "2005.14165",
-    "paper_name": "Language Models are Few-Shot Learners (GPT-3)",
-    "venue_name": "NeurIPS",
+    "paper_id": "1812.08008",
+    "paper_name": "OpenPose: Realtime Multi-Person 2D Pose Estimation",
+    "venue_name": "TPAMI",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2019"
+  },
+  {
+    "paper_id": "TMP:physics-informed-neural-networks-a-deep-learning-framework-for-solving-forward-and-inverse-problems-involving-nonlinear-",
+    "paper_name": "Physics-Informed Neural Networks: A Deep Learning Framework for Solving Forward and Inverse Problems Involving Nonlinear Partial Differential Equations",
+    "venue_name": "Journal of Computational Physics",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2019"
+  },
+  {
+    "paper_id": "1908.10084",
+    "paper_name": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+    "venue_name": "EMNLP",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2019"
+  },
+  {
+    "paper_id": "W4404667199",
+    "paper_name": "The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks",
+    "venue_name": "ICLR",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2019"
+  },
+  {
+    "paper_id": "TMP:a-simple-framework-for-contrastive-learning-of-visual-representations",
+    "paper_name": "A Simple Framework for Contrastive Learning of Visual Representations (SimCLR)",
+    "venue_name": "ICML",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2020"
@@ -464,25 +824,9 @@
     "year": "2020"
   },
   {
-    "paper_id": "2003.08934",
-    "paper_name": "NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis",
-    "venue_name": "ECCV",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2020"
-  },
-  {
-    "paper_id": "1911.02116",
-    "paper_name": "XLM-R: Unsupervised Cross-lingual Representation Learning",
-    "venue_name": "ACL",
-    "venue_class": "Conference",
-    "relation": "PUBLISHED_IN",
-    "year": "2020"
-  },
-  {
-    "paper_id": "2006.11477",
-    "paper_name": "Wav2Vec 2.0: A Framework for Self-Supervised Learning of Speech",
-    "venue_name": "NeurIPS",
+    "paper_id": "2010.02502",
+    "paper_name": "DDIM: Denoising Diffusion Implicit Models",
+    "venue_name": "ICLR",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2020"
@@ -496,9 +840,33 @@
     "year": "2020"
   },
   {
-    "paper_id": "2010.02502",
-    "paper_name": "DDIM: Denoising Diffusion Implicit Models",
-    "venue_name": "ICLR",
+    "paper_id": "1910.03771",
+    "paper_name": "Hugging Face Transformers Library",
+    "venue_name": "EMNLP",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2020"
+  },
+  {
+    "paper_id": "2005.14165",
+    "paper_name": "Language Models are Few-Shot Learners (GPT-3)",
+    "venue_name": "NeurIPS",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2020"
+  },
+  {
+    "paper_id": "2003.08934",
+    "paper_name": "NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis",
+    "venue_name": "ECCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2020"
+  },
+  {
+    "paper_id": "2004.04906",
+    "paper_name": "Open Domain Question Answering with DPR",
+    "venue_name": "EMNLP",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2020"
@@ -512,16 +880,32 @@
     "year": "2020"
   },
   {
-    "paper_id": "2103.0002",
-    "paper_name": "CLIP: Learning Transferable Visual Models from Natural Language",
-    "venue_name": "ICML",
-    "venue_class": "Conference",
+    "paper_id": "1910.10683",
+    "paper_name": "T5: Exploring the Limits of Transfer Learning",
+    "venue_name": "JMLR",
+    "venue_class": "Journal",
     "relation": "PUBLISHED_IN",
-    "year": "2021"
+    "year": "2020"
   },
   {
-    "paper_id": "TMP:highly-accurate-protein-structure-prediction-with-alphafold",
-    "paper_name": "Highly accurate protein structure prediction with AlphaFold",
+    "paper_id": "2006.11477",
+    "paper_name": "Wav2Vec 2.0: A Framework for Self-Supervised Learning of Speech",
+    "venue_name": "NeurIPS",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2020"
+  },
+  {
+    "paper_id": "1911.02116",
+    "paper_name": "XLM-R: Unsupervised Cross-lingual Representation Learning",
+    "venue_name": "ACL",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2020"
+  },
+  {
+    "paper_id": "paper_alphafold2_architect",
+    "paper_name": "AlphaFold2 Architecture Details",
     "venue_name": "Nature",
     "venue_class": "Journal",
     "relation": "PUBLISHED_IN",
@@ -536,10 +920,18 @@
     "year": "2021"
   },
   {
-    "paper_id": "paper_alphafold2_architect",
-    "paper_name": "AlphaFold2 Architecture Details",
-    "venue_name": "Nature",
-    "venue_class": "Journal",
+    "paper_id": "2103.0002",
+    "paper_name": "CLIP: Learning Transferable Visual Models from Natural Language",
+    "venue_name": "ICML",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2021"
+  },
+  {
+    "paper_id": "2104.14294",
+    "paper_name": "DINO: Self-Supervised Vision Transformers (Self-DIstillation with NO labels)",
+    "venue_name": "ICCV",
+    "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2021"
   },
@@ -552,9 +944,17 @@
     "year": "2021"
   },
   {
-    "paper_id": "2011.13456",
-    "paper_name": "Score-Based Generative Modeling through SDEs",
-    "venue_name": "ICLR",
+    "paper_id": "TMP:highly-accurate-protein-structure-prediction-with-alphafold",
+    "paper_name": "Highly accurate protein structure prediction with AlphaFold",
+    "venue_name": "Nature",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2021"
+  },
+  {
+    "paper_id": "2012.07436",
+    "paper_name": "Informer: Beyond Efficient Transformer for Long Sequence Forecasting",
+    "venue_name": "AAAI",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2021"
@@ -576,25 +976,33 @@
     "year": "2021"
   },
   {
-    "paper_id": "2112.10752",
-    "paper_name": "High-Resolution Image Synthesis with Latent Diffusion Models (Stable Diffusion)",
-    "venue_name": "CVPR",
+    "paper_id": "on-the-dangers-of-stochastic-parrots-can-language-models-be-too-big",
+    "paper_name": "On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?",
+    "venue_name": "ACM Conference on Fairness, Accountability, and Transparency (FAccT)",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
-    "year": "2022"
+    "year": "2021"
   },
   {
-    "paper_id": "2111.06377",
-    "paper_name": "Masked Autoencoders Are Scalable Vision Learners",
-    "venue_name": "CVPR",
+    "paper_id": "2011.13456",
+    "paper_name": "Score-Based Generative Modeling through SDEs",
+    "venue_name": "ICLR",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
-    "year": "2022"
+    "year": "2021"
   },
   {
-    "paper_id": "2203.02155",
-    "paper_name": "Training Language Models to Follow Instructions with Human Feedback (InstructGPT)",
-    "venue_name": "NeurIPS",
+    "paper_id": "2103.1403",
+    "paper_name": "Swin Transformer: Hierarchical Vision Transformer",
+    "venue_name": "ICCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2021"
+  },
+  {
+    "paper_id": "2201.12086",
+    "paper_name": "BLIP: Bootstrapping Language-Image Pre-training",
+    "venue_name": "ICML",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2022"
@@ -616,9 +1024,25 @@
     "year": "2022"
   },
   {
-    "paper_id": "2201.12086",
-    "paper_name": "BLIP: Bootstrapping Language-Image Pre-training",
-    "venue_name": "ICML",
+    "paper_id": "2206.07682",
+    "paper_name": "Emergent Abilities of Large Language Models",
+    "venue_name": "Transactions on Machine Learning Research",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2022"
+  },
+  {
+    "paper_id": "2205.14135",
+    "paper_name": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+    "venue_name": "NeurIPS",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2022"
+  },
+  {
+    "paper_id": "2112.10752",
+    "paper_name": "High-Resolution Image Synthesis with Latent Diffusion Models (Stable Diffusion)",
+    "venue_name": "CVPR",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2022"
@@ -632,16 +1056,32 @@
     "year": "2022"
   },
   {
-    "paper_id": "2205.14135",
-    "paper_name": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
-    "venue_name": "NeurIPS",
+    "paper_id": "2111.06377",
+    "paper_name": "Masked Autoencoders Are Scalable Vision Learners",
+    "venue_name": "CVPR",
     "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2022"
+  },
+  {
+    "paper_id": "2101.03961",
+    "paper_name": "Switch Transformers: Scaling to Trillion Parameter Models",
+    "venue_name": "JMLR",
+    "venue_class": "Journal",
     "relation": "PUBLISHED_IN",
     "year": "2022"
   },
   {
     "paper_id": "W4399470739",
     "paper_name": "Training Compute-Optimal Large Language Models",
+    "venue_name": "NeurIPS",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2022"
+  },
+  {
+    "paper_id": "2203.02155",
+    "paper_name": "Training Language Models to Follow Instructions with Human Feedback (InstructGPT)",
     "venue_name": "NeurIPS",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
@@ -664,17 +1104,33 @@
     "year": "2023"
   },
   {
-    "paper_id": "2212.04356",
-    "paper_name": "Whisper: Robust Speech Recognition via Large-Scale Weak Supervision",
+    "paper_id": "2301.12597",
+    "paper_name": "BLIP-2: Bootstrapping Language-Image Pre-training with Frozen LLMs",
     "venue_name": "ICML",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2023"
   },
   {
-    "paper_id": "2301.12597",
-    "paper_name": "BLIP-2: Bootstrapping Language-Image Pre-training with Frozen LLMs",
-    "venue_name": "ICML",
+    "paper_id": "2302.05543",
+    "paper_name": "ControlNet: Adding Conditional Control to Text-to-Image Diffusion",
+    "venue_name": "ICCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2023"
+  },
+  {
+    "paper_id": "2304.07193",
+    "paper_name": "DINOv2: Learning Robust Visual Features without Supervision",
+    "venue_name": "Transactions on Machine Learning Research",
+    "venue_class": "Journal",
+    "relation": "PUBLISHED_IN",
+    "year": "2023"
+  },
+  {
+    "paper_id": "2305.1829",
+    "paper_name": "Direct Preference Optimization",
+    "venue_name": "NeurIPS",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2023"
@@ -696,9 +1152,17 @@
     "year": "2023"
   },
   {
-    "paper_id": "2305.1829",
-    "paper_name": "Direct Preference Optimization",
-    "venue_name": "NeurIPS",
+    "paper_id": "2304.02643",
+    "paper_name": "Segment Anything Model (SAM)",
+    "venue_name": "ICCV",
+    "venue_class": "Conference",
+    "relation": "PUBLISHED_IN",
+    "year": "2023"
+  },
+  {
+    "paper_id": "2212.04356",
+    "paper_name": "Whisper: Robust Speech Recognition via Large-Scale Weak Supervision",
+    "venue_name": "ICML",
     "venue_class": "Conference",
     "relation": "PUBLISHED_IN",
     "year": "2023"

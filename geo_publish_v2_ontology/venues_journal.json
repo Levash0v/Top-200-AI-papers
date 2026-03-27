@@ -115,5 +115,131 @@
     "description": "Historical statistics journal; predecessor to Annals of Statistics.",
     "since": 1930,
     "web_url": null
+  },
+  {
+    "id": "venue_jour_bell_system_technical_journa",
+    "name": "Bell System Technical Journal",
+    "short_name": "Bell System Technical Journal",
+    "type": "Journal",
+    "description": "Technical journal publishing foundational work in information theory and computing.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_ibm_journal_of_research_and_",
+    "name": "IBM Journal of Research and Development",
+    "short_name": "IBM Journal of Research and Development",
+    "type": "Journal",
+    "description": "IBM research journal publishing foundational computer science work.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_ieee_transactions_on_informa",
+    "name": "IEEE Transactions on Information Theory",
+    "short_name": "IEEE Transactions on Information Theory",
+    "type": "Journal",
+    "description": "IEEE journal in information theory.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_ieee_transactions_on_systems",
+    "name": "IEEE Transactions on Systems Science and Cybernetics",
+    "short_name": "IEEE Transactions on Systems Science and Cybernetics",
+    "type": "Journal",
+    "description": "IEEE journal covering systems science and cybernetics.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_ijcv",
+    "name": "IJCV",
+    "short_name": "IJCV",
+    "type": "Journal",
+    "description": "International Journal of Computer Vision.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_journal_of_computational_phy",
+    "name": "Journal of Computational Physics",
+    "short_name": "Journal of Computational Physics",
+    "type": "Journal",
+    "description": "Journal covering computational physics and numerical methods.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_journal_of_computer_and_syst",
+    "name": "Journal of Computer and System Sciences",
+    "short_name": "Journal of Computer and System Sciences",
+    "type": "Journal",
+    "description": "Journal in theoretical computer science and systems research.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_journal_of_symbolic_logic",
+    "name": "Journal of Symbolic Logic",
+    "short_name": "Journal of Symbolic Logic",
+    "type": "Journal",
+    "description": "Journal covering logic, foundations, and formal systems.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_journal_of_the_acm",
+    "name": "Journal of the ACM",
+    "short_name": "Journal of the ACM",
+    "type": "Journal",
+    "description": "Flagship ACM journal.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_journal_of_the_royal_statist",
+    "name": "Journal of the Royal Statistical Society Series B",
+    "short_name": "JRSS Series B",
+    "type": "Journal",
+    "description": "Journal of the Royal Statistical Society Series B.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_proceedings_of_the_ieee",
+    "name": "Proceedings of the IEEE",
+    "short_name": "Proceedings of the IEEE",
+    "type": "Journal",
+    "description": "Flagship IEEE journal/proceedings series.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_proceedings_of_the_ire",
+    "name": "Proceedings of the IRE",
+    "short_name": "Proceedings of the IRE",
+    "type": "Journal",
+    "description": "Historical IRE journal/proceedings series.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_proceedings_of_the_london_ma",
+    "name": "Proceedings of the London Mathematical Society",
+    "short_name": "Proceedings of the LMS",
+    "type": "Journal",
+    "description": "Journal of the London Mathematical Society proceedings series.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_jour_transactions_on_machine_lear",
+    "name": "Transactions on Machine Learning Research",
+    "short_name": "TMLR",
+    "type": "Journal",
+    "description": "Open review-based journal for machine learning research.",
+    "since": null,
+    "web_url": null
   }
 ]

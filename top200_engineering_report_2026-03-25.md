@@ -333,6 +333,16 @@ Next open implementation question:
 
 - organization reuse should likely become name-first and AI-space-aware, instead of relying only on the current expected type bucket such as `Project`
 
+Follow-up implementation status:
+
+- a first-pass exact org reuse layer has now been added
+- it reuses exact existing AI-space entities before creating new org-like entities
+- this was confirmed in dry-run on:
+  - `DistilBERT` -> `Hugging Face`
+  - `Attention Is All You Need` -> `Google Brain`
+- in both cases the foundation batch no longer created a duplicate org entity
+- near-match merges such as `AWS -> Amazon`, `NVIDIA Research -> NVIDIA`, and `University of Montreal (Mila) -> MILA` are still intentionally excluded from automatic reuse
+
 ## 14. Venue normalization rule — hybrid and historical cases
 
 Current venue normalization rule:
@@ -362,3 +372,215 @@ Operational implication:
 
 - hybrid venue cleanup should stay case-by-case
 - no broad regex-based rewrite of `Proceedings`, `Transactions`, or similar journal title patterns should be applied without paper-specific evidence
+
+## 15. Non-traditional publication cases
+
+Not every Top200 item should be expected to have a normal journal/conference venue.
+
+Some newer items are better understood as:
+
+- technical reports
+- web publications
+- blog posts
+- software releases
+- repository-first releases
+- documentation-first releases
+
+Examples:
+
+- `GPT (2018)` -> OpenAI technical report
+- `GPT-2 (2019)` -> OpenAI technical report
+- `YOLOv5 (2020)` -> GitHub repository / software release
+- `ChatGPT (2022)` -> OpenAI web publication / blog post
+- `YOLOv8 (2023)` -> documentation / software release
+
+Reason:
+
+- these are not standard journal-or-conference publication cases
+- so missing `primary_venue_*` should not automatically be treated as a data-quality problem
+- and missing `arXiv` should not automatically be treated as an anomaly either
+
+Operational implication:
+
+- venue completeness checks should distinguish between:
+  - standard academic publication cases
+  - non-traditional publication cases
+- venue-normalization logic should not force every paper into `Journal` / `Conference` / `Preprint` when the source item is clearly a report, release, repo, or web publication
+
+## 16. Current ontology and pipeline snapshot
+
+What is already implemented and validated:
+
+- `votingMode: "SLOW"` was added to DAO `proposeEdit(...)`, which unblocked live publication
+- the one-paper live pilot succeeded for `Deep Residual Learning for Image Recognition`
+- `conference -> Event` has been implemented and pushed
+- empty `0 ops` batches are now skipped instead of creating empty proposals
+- exact existing org reuse has been implemented and confirmed in dry-run on:
+  - `DistilBERT` -> `Hugging Face`
+  - `Attention Is All You Need` -> `Google Brain`
+
+Current publication-layer understanding:
+
+- `primary_venue_*` is the clean normalized primary publication layer in the source bundle
+- `published_in` is the main publication relation used in Geo
+- `Journal` is currently treated as a type
+- `Conference` is currently treated as `Event` type
+- AI-space `Venue` should not currently be used as a replacement for `published_in`
+
+Reason:
+
+- current AI-space `Venue` is treated as a physical/event-hosting venue concept, not as the journal/publication relation itself
+- therefore it should not replace the publication model for Top200 papers
+
+Current reading of `peer_reviewed_by`:
+
+- it is not a clean conference-only field
+- in the current source bundle it behaves as a mixed auxiliary venue-context layer
+- sometimes it duplicates the primary venue using a fuller label
+- sometimes it adds a real secondary event/review context
+- sometimes it is the only available venue-like context when `primary_venue_*` is missing
+
+Operational rule for now:
+
+- use `peer_reviewed_by` only when it adds real structure or enrichment
+- do not treat it as a mandatory second publication layer for every paper
+
+Current org/affiliation understanding:
+
+- paper -> org currently publishes through `related_projects`
+- in practice this relation is carrying research affiliations, not generic “projects”
+- the linked entities currently include:
+  - research labs
+  - universities
+  - research organizations
+
+Resolved ontology clarification from Armando:
+
+- `journal -> Journal type`
+  - examples: `Nature`, `Journal of Machine Learning Research`
+- `conference -> Event type`
+  - examples: `CVPR`, `NeurIPS`
+
+Also explicitly clarified:
+
+- do **not** use `Venue` as a property for Top200 publication modeling
+- do **not** use `Venue` as a type for Top200 publication modeling
+- do **not** switch org-like affiliation entities to `Research lab` property
+- do **not** switch org-like affiliation entities to `Lab` type
+- for org-like affiliations, stay on the current `Project` path
+
+Operational consequence:
+
+- `published_in` remains the publication relation
+- `Journal` remains the target type for journal publications
+- `Event` remains the target type for conference publications
+- `Project` remains the current target path for paper -> organization / affiliation-style relations
+- `Venue`, `Research lab`, and `Lab` are now out of scope for the current Top200 pipeline
+
+This closes the earlier pending ambiguity around:
+
+- `Venue` property vs `Venue` type
+- `Research lab` property vs `Lab` type
+
+## 17. Updated Top200 execution plan
+
+What is already done:
+
+- `conference -> Event` has been implemented and validated
+- `journal -> Journal` is confirmed and already aligned
+- empty batch proposals are skipped
+- exact existing org reuse is implemented and validated
+- hybrid venue cleanup for `TOG / SIGGRAPH` has been normalized
+- one-paper pilot publish has already succeeded live
+
+What remains as the current working plan:
+
+1. keep the current publication model stable
+   - `published_in -> Journal`
+   - `conference -> Event`
+
+2. keep paper -> organization links on the current `Project` path
+   - do not remap to `Lab`
+   - do not remap to `Research lab`
+
+3. continue using exact existing-entity reuse before create
+   - especially for org-like entities already present in the AI space
+
+4. continue treating `peer_reviewed_by` as optional enrichment only
+   - do not force it into a second universal publication layer
+
+5. handle non-traditional publication cases separately
+   - technical reports
+   - web publications
+   - repo / software releases
+   - documentation-first releases
+
+6. the next likely implementation step, if publication quality is the priority:
+   - add a separate image pass for papers
+   - because the successful missing-only pilot intentionally did not publish images
+
+## 18. `peer_reviewed_by` venue backfill applied
+
+A controlled data-only backfill was applied to:
+
+- [papers.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.json)
+
+Backup created:
+
+- [papers.backup_2026-03-27_peer_review_backfill.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.backup_2026-03-27_peer_review_backfill.json)
+
+Scope of the patch:
+
+- filled `primary_venue_name`
+- filled `primary_venue_type`
+- used existing `peer_reviewed_by` only as a controlled source for backfill
+- did **not** modify:
+  - `peer_reviewed_by`
+  - relation JSON
+  - publish code
+
+Result:
+
+- `57` papers received venue backfill
+- `Tacotron 2` was reclassified as:
+  - `is_preprint_only = true`
+  - `primary_venue_*` left empty
+
+Current counts after patch:
+
+- `primary_venue_name` filled: `146`
+- `peer_reviewed_by` filled: `114`
+- `is_preprint_only = true`: `7`
+
+Representative backfilled cases:
+
+- `Programs with Common Sense`
+  - `Mechanization of Thought Processes, Vol. I`
+  - `Conference`
+- `Steps Toward Artificial Intelligence`
+  - `Proceedings of the IRE`
+  - `Journal`
+- `XGBoost: A Scalable Tree Boosting System`
+  - `KDD`
+  - `Conference`
+- `LIME: Why Should I Trust You?`
+  - `KDD`
+  - `Conference`
+- `A Simple Framework for Contrastive Learning of Visual Representations (SimCLR)`
+  - `ICML`
+  - `Conference`
+- `Informer: Beyond Efficient Transformer for Long Sequence Forecasting`
+  - `AAAI`
+  - `Conference`
+- `Emergent Abilities of Large Language Models`
+  - `Transactions on Machine Learning Research`
+  - `Journal`
+- `DINOv2: Learning Robust Visual Features without Supervision`
+  - `Transactions on Machine Learning Research`
+  - `Journal`
+
+Operational rule preserved:
+
+- `peer_reviewed_by` remains an auxiliary field
+- it was used here only as a source for safe venue normalization when `primary_venue_*` was missing
+- it is still not treated as a mandatory second publication layer for all papers

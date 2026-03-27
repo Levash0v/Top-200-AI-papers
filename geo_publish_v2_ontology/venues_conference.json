@@ -97,5 +97,68 @@
     "description": "Regional ACL conference covering computational linguistics and NLP.",
     "since": 2000,
     "web_url": "https://naacl.org"
+  },
+  {
+    "id": "venue_conf_aaai",
+    "name": "AAAI",
+    "short_name": "AAAI",
+    "type": "Conference",
+    "description": "AI conference venue used for Top200 paper publication context.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_conf_aistats",
+    "name": "AISTATS",
+    "short_name": "AISTATS",
+    "type": "Conference",
+    "description": "Conference on artificial intelligence and statistics.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_conf_colt",
+    "name": "COLT",
+    "short_name": "COLT",
+    "type": "Conference",
+    "description": "Conference on learning theory.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_conf_cvpr_workshops",
+    "name": "CVPR Workshops",
+    "short_name": "CVPR Workshops",
+    "type": "Conference",
+    "description": "Workshop track associated with CVPR.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_conf_kdd",
+    "name": "KDD",
+    "short_name": "KDD",
+    "type": "Conference",
+    "description": "Conference on knowledge discovery and data mining.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_conf_miccai",
+    "name": "MICCAI",
+    "short_name": "MICCAI",
+    "type": "Conference",
+    "description": "Conference on medical image computing and computer assisted intervention.",
+    "since": null,
+    "web_url": null
+  },
+  {
+    "id": "venue_conf_mechanization_of_thought_pro",
+    "name": "Mechanization of Thought Processes, Vol. I",
+    "short_name": "Mechanization of Thought Processes",
+    "type": "Conference",
+    "description": "Collected volume / conference proceedings context for early AI work.",
+    "since": null,
+    "web_url": null
   }
 ]
