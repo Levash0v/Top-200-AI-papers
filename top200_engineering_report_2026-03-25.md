@@ -584,3 +584,262 @@ Operational rule preserved:
 - `peer_reviewed_by` remains an auxiliary field
 - it was used here only as a source for safe venue normalization when `primary_venue_*` was missing
 - it is still not treated as a mandatory second publication layer for all papers
+
+## 19. `key_contribution` backfill from `ml_papers.xlsx`
+
+A second controlled data-only backfill was applied to:
+
+- [papers.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.json)
+
+Backup created:
+
+- [papers.backup_2026-03-27_ml_key_contribution_backfill.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.backup_2026-03-27_ml_key_contribution_backfill.json)
+
+Source used:
+
+- [ml_papers.xlsx](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/event_monitor_mvp/%D0%BF%D0%B0%D1%82%D1%87/ml_papers.xlsx)
+
+Source columns:
+
+- `Paper`
+- `Field`
+- `Key Contribution`
+
+Scope of the patch:
+
+- filled missing `key_contribution` values only
+- matched all `139` empty cases against the source sheet
+- used exact-name, normalized-name, and explicit alias matching where the source paper title was shortened
+- did **not** modify:
+  - venue fields
+  - relation JSON
+  - publish code
+
+Result:
+
+- `139` papers received `key_contribution` backfill
+- `key_contribution` coverage is now `200 / 200`
+- empty `key_contribution` count is now `0`
+
+Important schema decision:
+
+- source field `Field` was reviewed but intentionally **not** imported into the current Top200 publish bundle
+- it behaves like a loose editorial/domain category
+- it does not map cleanly enough to the current `Topic` / `Tag` model to justify automatic ingestion
+- therefore the current patch uses only:
+  - `Paper`
+  - `Key Contribution`
+
+Operational consequence:
+
+- `key_contribution` is now fully populated for the current source bundle
+- `Field` remains out of scope unless we later decide to add a separate controlled mapping into domains/topics
+
+## 20. `abstract` backfill from `papers_with_abstracts.xlsx`
+
+A third controlled data-only backfill was applied to:
+
+- [papers.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.json)
+
+Backup created:
+
+- [papers.backup_2026-03-27_ml_abstract_backfill.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.backup_2026-03-27_ml_abstract_backfill.json)
+
+Source used:
+
+- [papers_with_abstracts.xlsx](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/event_monitor_mvp/%D0%BF%D0%B0%D1%82%D1%87/papers_with_abstracts.xlsx)
+
+Source columns:
+
+- `Paper`
+- `Abstract`
+
+Scope of the patch:
+
+- filled missing `abstract` values only
+- source coverage matched the current bundle exactly:
+  - `115` source rows
+  - `115` missing abstracts before patch
+  - `0` source rows outside the current missing set
+  - `0` missing bundle rows outside the source
+- did **not** modify:
+  - `key_contribution`
+  - venue fields
+  - relation JSON
+  - publish code
+
+Result:
+
+- `115` papers received `abstract` backfill
+- `abstract` coverage is now `200 / 200`
+- empty `abstract` count is now `0`
+
+Operational consequence:
+
+- the current source bundle now has full paper-level coverage for both:
+  - `key_contribution`
+  - `abstract`
+- this improves paper property completeness without changing ontology structure or relation logic
+
+## 21. Safe `doi` backfill from `papers_doi.xlsx`
+
+A fourth controlled data-only backfill was applied to:
+
+- [papers.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.json)
+
+Backup created:
+
+- [papers.backup_2026-03-28_safe_doi_backfill.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.backup_2026-03-28_safe_doi_backfill.json)
+
+Source used:
+
+- [papers_doi.xlsx](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/event_monitor_mvp/%D0%BF%D0%B0%D1%82%D1%87/papers_doi.xlsx)
+
+Source columns:
+
+- `Paper`
+- `DOI / Identifier`
+
+Scope of the patch:
+
+- filled missing `doi` values only
+- source coverage matched the current missing set exactly:
+  - `98` source rows
+  - `98` missing DOI rows before patch
+- but the source contained several disputed cases, so only a safe subset was applied
+
+Disputed DOI cases intentionally excluded from automatic ingestion:
+
+- `Reinforcement Learning: An Introduction`
+- `Foundations of Statistical Natural Language Processing`
+- `YOLOv8`
+
+Reason:
+
+- some DOI values in the source table appeared to conflate different MIT Press books
+- `YOLOv8` reused the `YOLOv5` Zenodo DOI, which did not validate cleanly
+- these rows require separate manual verification before ingestion
+
+Result:
+
+- `95` papers received DOI backfill
+- DOI coverage is now `197 / 200`
+- remaining empty DOI count is `3`
+
+Operational consequence:
+
+- the DOI layer is now mostly complete
+- the remaining empty cases are explicitly isolated for later manual verification
+
+## 22. `code_url` backfill from `papers_code_urls.xlsx`
+
+A fifth controlled data-only backfill was applied to:
+
+- [papers.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.json)
+
+Backup created:
+
+- [papers.backup_2026-03-28_code_url_backfill.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.backup_2026-03-28_code_url_backfill.json)
+
+Source used:
+
+- [papers_code_urls.xlsx](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/event_monitor_mvp/%D0%BF%D0%B0%D1%82%D1%87/papers_code_urls.xlsx)
+
+Source columns:
+
+- `Paper`
+- `Code URL`
+- `Notes`
+
+Scope of the patch:
+
+- filled missing `code_url` values only
+- source coverage matched the current missing set exactly:
+  - `106` source rows
+  - `106` missing `code_url` rows before patch
+- imported only real `http/https` URLs
+- rows marked with placeholders such as `—` were intentionally left empty
+
+Interpretation rule used:
+
+- if the source provided a real URL, it was ingested
+- if the source indicated that no official code exists, the field remained empty
+
+Result:
+
+- `82` papers received `code_url` backfill
+- `24` papers remain intentionally empty because the source explicitly indicated no code
+- `code_url` coverage is now `176 / 200`
+
+Operational consequence:
+
+- `code_url` now reflects a curated distinction between:
+  - papers with a usable code or implementation link
+  - papers with no official or meaningful code target
+
+## 23. Safe `primary_venue_*` and preprint patch from `papers_venues.xlsx`
+
+A sixth controlled data-only patch was applied to:
+
+- [papers.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.json)
+
+Backup created:
+
+- [papers.backup_2026-03-28_safe_primary_venue_and_preprint_patch.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.backup_2026-03-28_safe_primary_venue_and_preprint_patch.json)
+
+Source used:
+
+- [papers_venues.xlsx](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/event_monitor_mvp/%D0%BF%D0%B0%D1%82%D1%87/papers_venues.xlsx)
+
+Source columns:
+
+- `Paper`
+- `Type`
+- `Primary Venue Name`
+
+What the source covered:
+
+- exactly the `54` papers whose `primary_venue_*` was still empty
+
+Source type breakdown:
+
+- `Journal` — `10`
+- `Conference` — `8`
+- `Preprint` — `22`
+- `Book` — `7`
+- `Tech Report` — `6`
+- `Blog/Other` — `1`
+
+Safe patch rule used:
+
+- applied `primary_venue_name` and `primary_venue_type` only for:
+  - `Journal`
+  - `Conference`
+- did **not** auto-ingest `Book`, `Tech Report`, or `Blog/Other` into the current primary venue model
+- for `Preprint` rows:
+  - set `is_preprint_only = true`
+  - but only when the paper already had a supporting publication URL layer:
+    - `arxiv_url`
+    - or `web_url`
+
+Reason:
+
+- the current Top200 venue model is still centered on:
+  - `Journal`
+  - `Conference`
+- while `Book`, `Tech Report`, and `Blog/Other` remain non-standard publication contexts
+- preprints are best treated as publication-status metadata rather than forced journal/conference venues
+
+Result:
+
+- `18` papers received safe `primary_venue_*` backfill
+- `19` papers were additionally marked `is_preprint_only = true`
+- total `is_preprint_only = true` count is now `26`
+- `primary_venue_*` still remains empty for `36` papers
+
+Remaining unresolved venue-context cases are now concentrated in:
+
+- `Book`
+- `Tech Report`
+- `Blog/Other`
+- other non-traditional publication contexts that should not yet be forced into the current venue schema
