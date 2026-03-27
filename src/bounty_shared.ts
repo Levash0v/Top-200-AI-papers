@@ -128,6 +128,109 @@ export async function fetchExistingMaps(typeIds: string[]): Promise<Map<string, 
   return merged;
 }
 
+type ExistingEntityType = { id: string; name: string };
+type ExistingEntityCandidate = { id: string; name: string; types: ExistingEntityType[] };
+
+const ORG_EXACT_REUSE_OVERRIDES: Record<string, string> = {
+  "apple": "e7d0727de0f74ac19d5b88f027dd1fde",
+  "hugging face": "5e0fff5041e34f6fb21e40018f6cd443",
+  "google brain": "143e615b074f4f10b4f850681edd9323",
+};
+
+function scoreOrgCandidate(candidate: ExistingEntityCandidate): number {
+  const typeNames = candidate.types.map((t) => t.name.toLowerCase());
+  if (typeNames.length === 0) return 10;
+  if (typeNames.includes("data block")) return 0;
+  let score = 10;
+  if (typeNames.includes("lab")) score += 6;
+  if (typeNames.includes("organization")) score += 5;
+  if (typeNames.includes("company")) score += 4;
+  if (typeNames.includes("project")) score += 3;
+  if (typeNames.includes("provider")) score += 2;
+  return score;
+}
+
+async function fetchEntityCandidateById(entityId: string): Promise<ExistingEntityCandidate | null> {
+  let data: any;
+  try {
+    data = await gql(
+      `query($id: UUID!) {
+        entity(id: $id) {
+          id
+          name
+          types { id name }
+        }
+      }`,
+      { id: entityId },
+    );
+  } catch {
+    return null;
+  }
+
+  const entity = data?.entity;
+  if (!entity?.id || !entity?.name) return null;
+  return {
+    id: entity.id,
+    name: entity.name,
+    types: entity.types ?? [],
+  };
+}
+
+export async function fetchExistingExactOrgMap(names: string[]): Promise<Map<string, string>> {
+  const map = new Map<string, string>();
+  const uniqueNames = new Map<string, string>();
+  for (const name of names) {
+    const normalized = normalizeEntityName(name);
+    if (!normalized || uniqueNames.has(normalized)) continue;
+    uniqueNames.set(normalized, name);
+  }
+
+  for (const [normalizedName, originalName] of uniqueNames.entries()) {
+    const overrideId = ORG_EXACT_REUSE_OVERRIDES[normalizedName];
+    if (overrideId) {
+      map.set(normalizedName, overrideId);
+      continue;
+    }
+
+    let data: any;
+    try {
+      data = await gql(
+        `query($spaceId: UUID!, $name: String!) {
+          entities(
+            spaceId: $spaceId
+            first: 20
+            filter: { name: { is: $name } }
+          ) { id name }
+        }`,
+        { spaceId: SPACE_ID, name: originalName },
+      );
+    } catch {
+      continue;
+    }
+
+    const rawMatches = (data?.entities ?? []).filter((e: any) => e?.id && e?.name);
+    const exactMatches = rawMatches.filter((e: any) => normalizeEntityName(e.name) === normalizedName);
+    if (exactMatches.length === 0) continue;
+
+    const candidates: ExistingEntityCandidate[] = [];
+    for (const match of exactMatches) {
+      const candidate = await fetchEntityCandidateById(match.id);
+      if (candidate) candidates.push(candidate);
+    }
+    if (candidates.length === 0) continue;
+
+    candidates.sort((a, b) => {
+      const scoreDiff = scoreOrgCandidate(b) - scoreOrgCandidate(a);
+      if (scoreDiff !== 0) return scoreDiff;
+      return a.id.localeCompare(b.id);
+    });
+
+    map.set(normalizedName, candidates[0].id);
+  }
+
+  return map;
+}
+
 type ExistingPaperState = {
   description: string | null;
   propertyIds: Set<string>;
