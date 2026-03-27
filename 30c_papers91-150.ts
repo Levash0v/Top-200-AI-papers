@@ -17,7 +17,7 @@ import dotenv from "dotenv";
 import { type Op } from "@geoprotocol/geo-sdk";
 import {
   SPACE_ID, BOUNTY, DRY_RUN, PILOT_PAPER_ID, PILOT_PAPER_NAME,
-  load, fetchExistingMap, fetchExistingMaps, publishBatch, buildPaperLookups, buildPaperOps, buildExistingPaperAugmentOps, normalizeEntityName, filterPapersForPilot,
+  load, fetchExistingMap, fetchExistingMaps, fetchExistingExactOrgMap, publishBatch, buildPaperLookups, buildPaperOps, buildExistingPaperAugmentOps, normalizeEntityName, filterPapersForPilot,
   type PaperData, type RelPaperPerson, type RelPaperVenue, type RelPaperDataset,
   type RelPaperTopic, type RelPaperOrg, type RelPaperTag,
   type TopicData, type TagData, type VenueData, type DatasetData,
@@ -57,6 +57,13 @@ async function buildRegistries(
   for (const d of datasets) { const x = existingDatasets.get(d.name.toLowerCase().trim());  if (x) datasetIds[d.name] = x; }
   for (const o of orgs)     { const x = existingProjects.get(o.name.toLowerCase().trim());  if (x) orgIds[o.name]     = x; }
   for (const p of persons)  { const x = existingPersons.get(p.name.toLowerCase().trim());   if (x) personIds[p.name]  = x; }
+  const unresolvedOrgNames = orgs.filter((o) => !orgIds[o.name]).map((o) => o.name);
+  const exactExistingOrgs = await fetchExistingExactOrgMap(unresolvedOrgNames);
+  for (const o of orgs) {
+    if (orgIds[o.name]) continue;
+    const x = exactExistingOrgs.get(normalizeEntityName(o.name));
+    if (x) orgIds[o.name] = x;
+  }
 
   return { topicIds, tagIds, venueIds, datasetIds, orgIds, personIds, existingPapers };
 }

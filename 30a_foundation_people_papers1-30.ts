@@ -15,7 +15,7 @@ import dotenv from "dotenv";
 import { Graph, type Op } from "@geoprotocol/geo-sdk";
 import {
   SPACE_ID, BOUNTY, DRY_RUN, PILOT_PAPER_ID, PILOT_PAPER_NAME,
-  load, fetchExistingMap, fetchExistingMaps, publishBatch, buildPaperLookups, buildPaperOps, buildExistingPaperAugmentOps,
+  load, fetchExistingMap, fetchExistingMaps, fetchExistingExactOrgMap, publishBatch, buildPaperLookups, buildPaperOps, buildExistingPaperAugmentOps,
   normalizeEntityName, filterPapersForPilot,
   type TopicData, type TagData, type VenueData, type DatasetData,
   type OrgData, type PersonData, type PaperData,
@@ -184,6 +184,13 @@ async function main() {
   const existingAnyVenue = await fetchExistingMaps([TYPES.event, TYPES.journal]);
   for (const v of venues)   { const x = existingAnyVenue.get(v.name.toLowerCase().trim());  if (x) venueIds[v.name]   = x; }
   for (const d of datasets) { const x = existingDatasets.get(d.name.toLowerCase().trim());  if (x) datasetIds[d.name] = x; }
+  const unresolvedOrgNames = orgs.filter((o) => !orgIds[o.name]).map((o) => o.name);
+  const exactExistingOrgs = await fetchExistingExactOrgMap(unresolvedOrgNames);
+  for (const o of orgs) {
+    if (orgIds[o.name]) continue;
+    const x = exactExistingOrgs.get(normalizeEntityName(o.name));
+    if (x) orgIds[o.name] = x;
+  }
 
   // ════════════════════════════════════════════════════════════════════════════
   //  BATCH 1 — Foundation
