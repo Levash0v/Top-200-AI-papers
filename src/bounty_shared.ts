@@ -21,11 +21,21 @@ function resolveFirstExistingDir(candidates: string[], label: string): string {
   );
 }
 
+const IMAGE_DIR_CANDIDATES = [
+  process.env.TOP200_IMAGES_DIR || "",
+  "./paper_images_202",
+  "../paper_images_202",
+  "../geo/geo_tech_demo/paper_images_202",
+].filter(Boolean);
+
 export const DATA_DIR   = resolveFirstExistingDir(
   ["./geo_publish_v2_ontology", "../geo_publish_v2_ontology", "./geo_publish_v2", "../geo_publish_v2"],
   "Data",
 );
-export const IMAGES_DIR = resolveFirstExistingDir(["./paper_images_202", "../paper_images_202"], "Images");
+export const IMAGES_DIR = resolveFirstExistingDir(
+  IMAGE_DIR_CANDIDATES,
+  "Images",
+);
 export const DRY_RUN    = process.env.DRY_RUN === "1";
 export const NETWORK    = "TESTNET" as const;
 export const BOUNTY     = "Bounty Top200 AI Papers";
@@ -281,10 +291,19 @@ export async function fetchExistingPaperState(entityId: string): Promise<Existin
 
 function resolveImage(local: string | undefined): string | null {
   if (!local) return null;
+  const imageRoots = Array.from(
+    new Set(
+      IMAGE_DIR_CANDIDATES
+        .map((candidate) => path.resolve(candidate))
+        .filter((candidate) => fs.existsSync(candidate)),
+    ),
+  );
   const candidates = [
     path.resolve(local),
-    path.join(IMAGES_DIR, path.basename(path.dirname(local)), path.basename(local)),
-    path.join(IMAGES_DIR, path.basename(local)),
+    ...imageRoots.flatMap((root) => [
+      path.join(root, path.basename(path.dirname(local)), path.basename(local)),
+      path.join(root, path.basename(local)),
+    ]),
   ];
   return candidates.find(fs.existsSync) ?? null;
 }
@@ -568,6 +587,18 @@ export async function buildExistingPaperAugmentOps(
       }).ops,
     );
   };
+
+  const hasAvatar = (existing.relationTargets.get(ContentIds.AVATAR_PROPERTY)?.size ?? 0) > 0;
+  if (!hasAvatar) {
+    const imageId = await uploadImage(paper.image_avatar ?? undefined, `${paper.name} avatar`, ops);
+    ensureRelation(ContentIds.AVATAR_PROPERTY, imageId);
+  }
+
+  const hasCover = (existing.relationTargets.get(SPACE_PROPS.cover)?.size ?? 0) > 0;
+  if (!hasCover) {
+    const coverId = await uploadImage(paper.image_cover ?? undefined, `${paper.name} cover`, ops);
+    ensureRelation(SPACE_PROPS.cover, coverId);
+  }
 
   for (const author of paperAuthors[pid] ?? []) {
     ensureRelation(SPACE_PROPS.authors, author.geoId);
