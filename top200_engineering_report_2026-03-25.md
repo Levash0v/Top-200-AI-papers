@@ -843,3 +843,64 @@ Remaining unresolved venue-context cases are now concentrated in:
 - `Tech Report`
 - `Blog/Other`
 - other non-traditional publication contexts that should not yet be forced into the current venue schema
+
+## 24. Image publish path fix for paper `avatar` and `cover`
+
+During post-backfill validation, the paper image pipeline was checked explicitly on:
+
+- an existing-paper enrichment path
+- a new-paper create path
+
+What was found:
+
+- `buildPaperOps(...)` already contained image handling for:
+  - `image_avatar`
+  - `image_cover`
+- but image ops were missing from dry-run bundles
+
+Root causes identified:
+
+1. Image path resolution was too narrow.
+
+- source records in [papers.json](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/geo_publish_v2_ontology/papers.json) use paths like:
+  - `images/avatars/...`
+  - `images/covers/...`
+- runtime was resolving images through a single detected `paper_images_202` root
+- in practice, the complete image set was found under:
+  - `/Users/max/Documents/GitHub/geo/geo_tech_demo/paper_images_202`
+- because the first existing image directory was not always the correct one, valid files could be missed even when they were present locally
+
+2. Existing-paper augmentation did not include images at all.
+
+- the `missing-only` augment path was only adding:
+  - scalar values
+  - standard relations
+- it was not attempting to backfill `avatar` or `cover`
+
+Fix applied in:
+
+- [src/bounty_shared.ts](/Users/max/Documents/GitHub/top200_publish_release_sync_repo/src/bounty_shared.ts)
+
+Changes made:
+
+- image resolution now searches across all known image roots instead of relying on a single chosen directory
+- existing-paper augmentation now:
+  - uploads `avatar` if the paper has no avatar relation yet
+  - uploads `cover` if the paper has no cover relation yet
+
+Verification result:
+
+- direct `Graph.createImage(...)` test on a real PNG succeeded on testnet
+- local `buildPaperOps(...)` verification for `DINOv2` changed from:
+  - `2 ops`
+  to:
+  - `8 ops`
+- this confirmed that:
+  - paper create ops are generated
+  - image entities are generated
+  - image attach relations are generated
+
+Important note:
+
+- full end-to-end dry-run through the public GraphQL API was still intermittently blocked by external `INTERNAL_SERVER_ERROR` responses from the testnet API
+- therefore the remaining blocker after the code fix is currently API instability, not the local image pipeline implementation
