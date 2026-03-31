@@ -19,23 +19,52 @@ const TESTNET_RPC_URL = "https://rpc-geo-test-zc16z3tcvf.t.conduit.xyz";
 
 const API_URL = "https://testnet-api.geobrowser.io/graphql";
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function gql(query: string, variables?: Record<string, any>) {
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables }),
-  });
+  const maxAttempts = 4;
 
-  if (!res.ok) {
-    throw new Error(`API error: ${res.status} ${res.statusText}`);
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, variables }),
+      });
+
+      if (!res.ok) {
+        const isRetriable = res.status >= 500 && attempt < maxAttempts;
+        if (isRetriable) {
+          await sleep(500 * attempt);
+          continue;
+        }
+        throw new Error(`API error: ${res.status} ${res.statusText}`);
+      }
+
+      const json = await res.json();
+      if (json.errors) {
+        const firstError = json.errors[0];
+        const errorCode = firstError?.extensions?.code;
+        const isRetriable = errorCode === "INTERNAL_SERVER_ERROR" && attempt < maxAttempts;
+        if (isRetriable) {
+          await sleep(500 * attempt);
+          continue;
+        }
+        console.error("GraphQL errors:", JSON.stringify(json.errors, null, 2));
+        throw new Error(`GraphQL: ${firstError?.message ?? "Unknown GraphQL error"}`);
+      }
+
+      return json.data;
+    } catch (error) {
+      const isLastAttempt = attempt === maxAttempts;
+      if (isLastAttempt) throw error;
+      await sleep(500 * attempt);
+    }
   }
 
-  const json = await res.json();
-  if (json.errors) {
-    console.error("GraphQL errors:", JSON.stringify(json.errors, null, 2));
-    throw new Error(`GraphQL: ${json.errors[0].message}`);
-  }
-  return json.data;
+  throw new Error("GraphQL: retry loop exhausted");
 }
 
 // ─── Publishing Helper ───────────────────────────────────────────────────────
