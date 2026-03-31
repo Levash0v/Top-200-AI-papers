@@ -39,6 +39,12 @@ export const IMAGES_DIR = resolveFirstExistingDir(
 export const DRY_RUN    = process.env.DRY_RUN === "1";
 export const NETWORK    = "TESTNET" as const;
 export const BOUNTY     = "Bounty Top200 AI Papers";
+export const PILOT_PAPER_IDS = new Set(
+  (process.env.PILOT_PAPER_IDS ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean),
+);
 export const PILOT_PAPER_ID = process.env.PILOT_PAPER_ID?.trim() || null;
 export const PILOT_PAPER_NAME = process.env.PILOT_PAPER_NAME?.trim() || null;
 
@@ -91,8 +97,9 @@ export function normalizeEntityName(name: string): string {
 }
 
 export function filterPapersForPilot<T extends { id: string; name: string }>(papers: T[]): T[] {
-  if (!PILOT_PAPER_ID && !PILOT_PAPER_NAME) return papers;
+  if (PILOT_PAPER_IDS.size === 0 && !PILOT_PAPER_ID && !PILOT_PAPER_NAME) return papers;
   return papers.filter((paper) => {
+    if (PILOT_PAPER_IDS.has(paper.id)) return true;
     if (PILOT_PAPER_ID && paper.id === PILOT_PAPER_ID) return true;
     if (PILOT_PAPER_NAME && normalizeEntityName(paper.name) === normalizeEntityName(PILOT_PAPER_NAME)) return true;
     return false;
@@ -103,7 +110,7 @@ export function filterPapersForPilot<T extends { id: string; name: string }>(pap
 
 export async function fetchExistingMap(typeId: string): Promise<Map<string, string>> {
   const map = new Map<string, string>();
-  const pageSize = 1000;
+  const pageSize = 200;
   let offset = 0;
 
   while (true) {

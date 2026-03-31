@@ -14,7 +14,7 @@
 import dotenv from "dotenv";
 import { Graph, type Op } from "@geoprotocol/geo-sdk";
 import {
-  SPACE_ID, BOUNTY, DRY_RUN, PILOT_PAPER_ID, PILOT_PAPER_NAME,
+  SPACE_ID, BOUNTY, DRY_RUN, PILOT_PAPER_IDS, PILOT_PAPER_ID, PILOT_PAPER_NAME,
   load, fetchExistingMap, fetchExistingMaps, fetchExistingExactOrgMap, publishBatch, buildPaperLookups, buildPaperOps, buildExistingPaperAugmentOps,
   normalizeEntityName, filterPapersForPilot,
   type TopicData, type TagData, type VenueData, type DatasetData,
@@ -57,7 +57,7 @@ function filterPilotDependencies(args: {
     relPaperTag,
   } = args;
 
-  if (!PILOT_PAPER_ID && !PILOT_PAPER_NAME) {
+  if (PILOT_PAPER_IDS.size === 0 && !PILOT_PAPER_ID && !PILOT_PAPER_NAME) {
     return args;
   }
 
@@ -104,8 +104,12 @@ async function main() {
   console.log(`║  Space: ${SPACE_ID.padEnd(54)}║`);
   console.log(`║  Mode:  ${(DRY_RUN ? "DRY RUN" : "LIVE · with images").padEnd(54)}║`);
   console.log("╚══════════════════════════════════════════════════════════════╝\n");
-  if (PILOT_PAPER_ID || PILOT_PAPER_NAME) {
-    console.log(`Pilot mode active: ${PILOT_PAPER_ID ?? PILOT_PAPER_NAME}\n`);
+  if (PILOT_PAPER_IDS.size > 0 || PILOT_PAPER_ID || PILOT_PAPER_NAME) {
+    const pilotLabel =
+      PILOT_PAPER_IDS.size > 0
+        ? Array.from(PILOT_PAPER_IDS).join(", ")
+        : (PILOT_PAPER_ID ?? PILOT_PAPER_NAME);
+    console.log(`Pilot mode active: ${pilotLabel}\n`);
   }
 
   // ── Load data ──────────────────────────────────────────────────────────────
